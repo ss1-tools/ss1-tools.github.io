@@ -41,8 +41,8 @@ def page(src: pathlib.Path):
 </main>
 <footer><div class="wrap">
  <nav aria-label="Legal"><a href="{up}legal/eula.html">License agreement (EULA)</a><a href="{up}legal/privacy.html">Privacy policy</a><a href="{up}legal/refunds.html">Refund policy</a><a href="{up}support.html">Support</a><a href="https://github.com/f3bandit/ss1_tool">GitHub</a></nav>
- <p>SS1 Tool and SS1 Tool for Android are independent, unofficial community tools made by f3bandit. They are not made, endorsed or supported by Taki Udon, Retro Remake or the MiSTer project. SuperStation One and all other product names are trademarks of their respective owners and are used only to describe compatibility.</p>
- <p>&copy; 2026 f3bandit. All rights reserved.</p>
+ <p>SS1 Tool and SS1 Tool for Android are independent, unofficial community tools made by f3bandit (F3 Digital Systems). They are not made, endorsed or supported by Taki Udon, Retro Remake or the MiSTer project. SuperStation One and all other product names are trademarks of their respective owners and are used only to describe compatibility.</p>
+ <p>&copy; 2026 f3bandit, trading as F3 Digital Systems. All rights reserved.</p>
 </div></footer>
 <script src="{up}assets/site.js"></script>
 </body>
