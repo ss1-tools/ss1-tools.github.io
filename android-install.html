@@ -25,8 +25,29 @@
  <li><b>On your phone or tablet</b>, open the download link and download <code>SS1Tool-Android-x.y.z.apk</code>.</li>
  <li><b>Open the downloaded file</b> (from the download notification, or Files › Downloads).</li>
  <li>If Android says your browser or file manager <b>isn't allowed to install apps</b>, tap <b>Settings</b>, turn on <b>Allow from this source</b>, then go back.</li>
- <li>Tap <b>Install</b>. If Play Protect shows a warning about an app it doesn't know yet, tap <b>More details</b> and <b>Install anyway</b>. SS1 Tool for Android has no ads, trackers or access to your personal files.</li>
+ <li>Tap <b>Install</b>. If Play Protect shows a warning about an app it doesn't know yet, tap <b>More details</b> and <b>Install anyway</b>. SS1 Tool for Android has no ads, trackers or access to your personal files. If Android says the app is <b>blocked</b>, see <a href="#blocked">If Android blocks the install</a>.</li>
  <li><b>Open SS1 Tool</b>. Read and accept the License Agreement, then enter your license key. That's it: the key is checked once, and the app works offline from then on.</li>
+</ol>
+
+<h2 id="blocked">If Android blocks the install</h2>
+<p>Most phones install SS1 Tool with the steps above. Some show <b>"App blocked"</b> or <b>"Blocked by Advanced Protection"</b> instead, often when Advanced Protection is or was turned on, or on phones that block every app from outside the Play Store. Use one of these two ways:</p>
+
+<h3>Option 1: Allow apps from unverified developers (on the phone)</h3>
+<ol class="steps">
+ <li>Open <b>Settings › About phone</b> and tap <b>Build number</b> 7 times (enter your PIN if asked). This turns on Developer options.</li>
+ <li>Open <b>Settings › System › Developer options</b> and turn on <b>Apps from unverified developers</b>.</li>
+ <li><b>Restart</b> the phone. Android can take <b>up to 24 hours</b> before this takes effect.</li>
+ <li>Install the APK again from your file manager or browser downloads.</li>
+</ol>
+
+<h3>Option 2: Install from a Windows PC with a USB cable</h3>
+<ol class="steps">
+ <li>On the phone, turn on Developer options (step 1 above), then in <b>Settings › System › Developer options</b> turn on <b>USB debugging</b>.</li>
+ <li>On the PC, download Google's <a href="https://developer.android.com/tools/releases/platform-tools">SDK Platform-Tools for Windows</a> and unzip it.</li>
+ <li>Download <code>SS1Tool-Android-x.y.z.apk</code> on the PC from your order, and put it in the <code>platform-tools</code> folder.</li>
+ <li>Connect the phone with a USB cable and tap <b>Allow</b> when the phone asks to allow USB debugging.</li>
+ <li>In the <code>platform-tools</code> folder, click the address bar, type <code>cmd</code> and press Enter. Then run (with your file's name):<br><code>adb install -r SS1Tool-Android-x.y.z.apk</code></li>
+ <li>When it says <b>Success</b>, SS1 Tool is installed. You can turn USB debugging off again. Updates can be installed the same way.</li>
 </ol>
 
 <div class="note info"><b>Check the download (optional).</b> The email lists the file's SHA-256 checksum. On a PC, <code>certutil -hashfile SS1Tool-Android-x.y.z.apk SHA256</code> shows it, so you can make sure the file is exactly the one we published.</div>
