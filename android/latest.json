@@ -1,0 +1,12 @@
+{
+ "versionName": "1.1.3",
+ "versionCode": 10,
+ "date": "2026-10-09",
+ "minSdk": 26,
+ "notes": [
+  "Update notices. When a new version is out, SS1 Tool shows Update available at the top, with what's new and a Download button that opens your order on Lemon Squeezy. Install the new version over the old one; your…",
+  "About › Check for updates checks straight away.",
+  "The check only reads a small file from ss1-tools.github.io and sends nothing about you (see the Privacy Policy)."
+ ],
+ "download": "https://app.lemonsqueezy.com/my-orders"
+}
