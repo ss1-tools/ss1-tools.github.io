@@ -31,6 +31,15 @@
  <li>Flashing an SD card needs administrator rights (SS1 Tool offers to restart itself as administrator)</li>
 </ul>
 
+<h2 id="antivirus">Antivirus warnings</h2>
+<p>Some antivirus programs flag <code>SS1Tool.exe</code>. It's a false positive: SS1 Tool isn't code-signed yet, and it does things that look unusual to an automatic scanner but are needed for its features:</p>
+<ul>
+ <li>writing directly to SD cards when you flash one (that's why it asks for administrator rights);</li>
+ <li>creating a limited Windows account when you use <b>Share a folder from this PC</b>, so the SuperStation can read that one folder;</li>
+ <li>connecting to the SuperStation over SSH and sending it small helper programs.</li>
+</ul>
+<p>The source code is public on <a href="https://github.com/f3bandit/ss1_tool">GitHub</a>. Only download SS1 Tool from this website or the GitHub releases page. If your antivirus blocks it, please <a href="support.html">let us know</a> which antivirus and what it called the file, so it can be reported as a false positive.</p>
+
 <form class="agree" data-kind="windows" id="download" onsubmit="return false">
  <h3>Before you download</h3>
  <p class="muted">SS1 Tool changes settings and files on your SuperStation and can erase and flash SD cards. Please confirm:</p>
