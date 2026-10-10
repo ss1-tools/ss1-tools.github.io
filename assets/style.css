@@ -84,3 +84,5 @@ footer a{color:var(--dim)}
  .row .btn{flex:1 1 220px}
 }
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+[hidden]{display:none!important}

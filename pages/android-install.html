@@ -1,51 +1,25 @@
-<!-- Install SS1 Tool for Android | How to install SS1 Tool for Android from this website, activate your license and update. -->
+<!-- Get SS1 Tool for Android | Installing SS1 Tool for Android from Google Play, updating it and moving it to a new phone. -->
 <section class="hero">
- <h1>Install SS1 Tool for Android</h1>
- <p class="lead">SS1 Tool for Android comes from this website, not the Play Store, so Android asks you to allow the install once.</p>
+ <h1>Get SS1 Tool for Android</h1>
+ <p class="lead">SS1 Tool for Android is on Google Play. Buy it once, and Google Play installs and updates it like any other app.</p>
 </section>
 
 <ol class="steps">
- <li><b>Buy the app</b> on the <a href="android.html#buy">Android page</a>. You'll get an email with your <b>license key</b> and a <b>download link</b>.</li>
- <li><b>On your phone or tablet</b>, open the download link and download <code>SS1Tool-Android-x.y.z.apk</code>.</li>
- <li><b>Open the downloaded file</b> (from the download notification, or Files › Downloads).</li>
- <li>If Android says your browser or file manager <b>isn't allowed to install apps</b>, tap <b>Settings</b>, turn on <b>Allow from this source</b>, then go back.</li>
- <li>Tap <b>Install</b>. If Play Protect shows a warning about an app it doesn't know yet, tap <b>More details</b> and <b>Install anyway</b>. SS1 Tool for Android has no ads, trackers or access to your personal files. If Android says the app is <b>blocked</b>, see <a href="#blocked">If Android blocks the install</a>.</li>
- <li><b>Open SS1 Tool</b>. Read and accept the License Agreement, then enter your license key. That's it. The app checks the key about once a week when you're online and keeps working without internet, but it needs to go online at least once every 30 days.</li>
+ <li>Open <a href="android.html">SS1 Tool for Android</a> on Google Play on your phone or tablet, and buy it.</li>
+ <li>Open SS1 Tool. Read and accept the License Agreement.</li>
+ <li>On <b>Connect</b>, type your SuperStation's IP address (shown at the bottom of the MiSTer menu, or in Console Mode's network settings) or tap <b>Find my SuperStation</b>. The default login is root / 1.</li>
 </ol>
-
-<h2 id="blocked">If Android blocks the install</h2>
-<p>Most phones install SS1 Tool with the steps above. Some show <b>"App blocked"</b> or <b>"Blocked by Advanced Protection"</b> instead, often when Advanced Protection is or was turned on, or on phones that block every app from outside the Play Store. This is Google's policy for apps from outside the Play Store (<a href="android.html#why">why SS1 Tool isn't on the Play Store</a>), not a problem with the app. Use one of these two ways:</p>
-
-<h3>Option 1: Allow apps from unverified developers (on the phone)</h3>
-<ol class="steps">
- <li>Open <b>Settings › About phone</b> and tap <b>Build number</b> 7 times (enter your PIN if asked). This turns on Developer options.</li>
- <li>Open <b>Settings › System › Developer options</b> and turn on <b>Apps from unverified developers</b>.</li>
- <li><b>Restart</b> the phone. Android can take <b>up to 24 hours</b> before this takes effect.</li>
- <li>Install the APK again from your file manager or browser downloads.</li>
-</ol>
-
-<h3>Option 2: Install from a Windows PC with a USB cable</h3>
-<ol class="steps">
- <li>On the phone, turn on Developer options (step 1 above), then in <b>Settings › System › Developer options</b> turn on <b>USB debugging</b>.</li>
- <li>On the PC, download Google's <a href="https://developer.android.com/tools/releases/platform-tools">SDK Platform-Tools for Windows</a> and unzip it.</li>
- <li>Download <code>SS1Tool-Android-x.y.z.apk</code> on the PC from your order, and put it in the <code>platform-tools</code> folder.</li>
- <li>Connect the phone with a USB cable and tap <b>Allow</b> when the phone asks to allow USB debugging.</li>
- <li>In the <code>platform-tools</code> folder, click the address bar, type <code>cmd</code> and press Enter. Then run (with your file's name):<br><code>adb install -r SS1Tool-Android-x.y.z.apk</code></li>
- <li>When it says <b>Success</b>, SS1 Tool is installed. You can turn USB debugging off again. Updates can be installed the same way.</li>
-</ol>
-
-<div class="note info"><b>Check the download (optional).</b> The email lists the file's SHA-256 checksum. On a PC, <code>certutil -hashfile SS1Tool-Android-x.y.z.apk SHA256</code> shows it, so you can make sure the file is exactly the one we published.</div>
 
 <h2>Updating</h2>
-<p>Download the new version from the link in your purchase email (Lemon Squeezy also lets you get it again from your order) and install it over the old one, the same way. Your settings, saved devices and license stay as they are.</p>
+<p>Google Play updates SS1 Tool by itself. To check now, open SS1 Tool's page in the Play Store, or in SS1 Tool tap <b>About › Check for updates</b>.</p>
 
-<h2>Moving to a new phone</h2>
-<p>Your key works on up to 3 devices. To free up a device you no longer use, open <b>About</b> in SS1 Tool on that device and choose <b>Remove license from this device</b>, or <a href="support.html">contact support</a>.</p>
+<h2>New phone or tablet</h2>
+<p>Sign in with the same Google account and install SS1 Tool from the Play Store (Manage apps › Library). You don't pay again. Saved devices aren't copied: add your SuperStation again on Connect.</p>
 
-<h2>Problems installing?</h2>
+<h2>Problems?</h2>
 <ul>
- <li><b>"App not installed"</b>: an older copy signed differently may be on the phone. Uninstall it first, then install again.</li>
- <li><b>"There was a problem parsing the package"</b>: the download didn't finish; download it again.</li>
- <li><b>Android older than 8.0</b>: the app can't be installed; see <a href="legal/eula.html#versions">supported versions</a>.</li>
+ <li><b>"Your device isn't compatible"</b>: SS1 Tool needs Android 8.0 or newer.</li>
+ <li><b>Something doesn't fit the screen or doesn't work</b>: in the app, open <b>About › Report a problem with the app</b>. It saves a report file and opens a GitHub issue for you.</li>
+ <li><b>Refunds and orders</b>: see the <a href="legal/refunds.html">refund policy</a>, or email <a href="mailto:f3.digital.systems@gmail.com">f3.digital.systems@gmail.com</a>.</li>
  <li>Anything else: <a href="support.html">SS1 Tools support</a>.</li>
 </ul>
