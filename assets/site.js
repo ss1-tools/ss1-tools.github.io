@@ -7,7 +7,7 @@ const SITE = {
   // Closed test sign-up: the Google Group testers join, and the Play testing link
   // (Play Console › Closed testing › Testers › Copy link). Empty = not shown yet.
   testerGroup: "https://groups.google.com/g/ss1tool-testers",
-  testerPlayLink: "",
+  testerPlayLink: "https://play.google.com/apps/testing/com.f3bandit.ss1tool",
   androidPrice: "$4.99",
   // The agreement version people accept on this site (also shown on the EULA page).
   eulaVersion: "1.1 (2026-10-10)",
