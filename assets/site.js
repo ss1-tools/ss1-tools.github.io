@@ -5,7 +5,7 @@ const SITE = {
   androidCheckout: "",
   androidPrice: "$4.99",
   // The agreement version people accept on this site (also shown on the EULA page).
-  eulaVersion: "1.0 (2026-10-09)",
+  eulaVersion: "1.1 (2026-10-10)",
   windowsDownload: "https://github.com/f3bandit/ss1_tool/releases/latest/download/SS1Tool.exe",
 };
 
