@@ -4,7 +4,7 @@ and footer. Run:  python3 tools/build.py   The generated pages are committed."""
 import pathlib, re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-NAV = [("index.html", "Home"), ("windows.html", "Windows"), ("android.html", "Android"),
+NAV = [("index.html", "Home"), ("windows.html", "Windows"), ("android.html", "Android"), ("demo.html", "Try it"),
        ("support.html", "Support"), ("legal/eula.html", "License"), ("legal/privacy.html", "Privacy")]
 
 def page(src: pathlib.Path):

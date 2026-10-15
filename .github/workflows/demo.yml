@@ -1,0 +1,54 @@
+# Keeps the SS1 Tool demo (Try it page) in step with the latest SS1 Tool: a few times a day it
+# takes the app's page from the public f3bandit/ss1_tool repo, rebuilds demo/ and publishes it.
+name: Update the demo
+
+on:
+  schedule:
+    - cron: "17 */4 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["demo-src/**", "tools/demo.py", "pages/demo.html"]
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: demo
+  cancel-in-progress: false
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the demo from the latest SS1 Tool
+        run: |
+          python3 tools/demo.py
+          python3 tools/build.py
+      - name: Check the demo pages
+        run: |
+          for p in windows android; do
+            python3 - "$p" <<'PY'
+          import re, sys
+          s = open(f"demo/{sys.argv[1]}.html").read()
+          assert 'src="mock.js"' in s and "demoBar" in s, "demo scripts missing"
+          assert 'id="giftWrap"' not in s, "easter egg left in"
+          open(f"/tmp/{sys.argv[1]}.js", "w").write("\n".join(re.findall(r"<script(?![^>]*src)[^>]*>(.*?)</script>", s, re.S)))
+          PY
+            node --check "/tmp/$p.js"
+          done
+          node --check demo/mock.js
+      - name: Publish if anything changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add -A demo *.html
+          if git diff --cached --quiet; then echo "Demo is up to date ($(cat demo/VERSION))"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Demo: SS1 Tool $(cat demo/VERSION)"
+          git push
+          # pushes made by this workflow don't start a Pages build on their own
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

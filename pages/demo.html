@@ -1,0 +1,36 @@
+<!-- Try SS1 Tool | Try SS1 Tool for Windows and SS1 Tool for Android in your browser, with a pretend SuperStation One. Nothing is installed or changed. -->
+<section class="hero" style="padding-bottom:14px">
+ <h1>Try SS1 <span class="red">Tool</span></h1>
+ <p class="lead">Click through SS1 Tool for Windows and SS1 Tool for Android right here. The demo uses a pretend SuperStation One with sample saves, drives and settings, so nothing you press changes anything.</p>
+ <div class="demotabs" role="tablist">
+  <button class="btn" role="tab" id="tabWin" aria-selected="true" onclick="demoShow('windows')">Windows</button>
+  <button class="btn" role="tab" id="tabAnd" aria-selected="false" onclick="demoShow('android')">Android</button>
+ </div>
+ <p class="muted" style="font-size:14px;margin:10px 0 0">Start on <b>Connect</b> and press <b>Connect</b>: the password is already filled in. The demo always shows the latest version of SS1 Tool.</p>
+</section>
+<div class="demostage">
+ <div class="demowin" id="demoWin">
+  <div class="demobar"><span class="dots"><i></i><i></i><i></i></span><span>SS1 Tool</span></div>
+  <div class="demoscale"><iframe id="frameWin" title="SS1 Tool for Windows demo" loading="lazy"></iframe></div>
+ </div>
+ <div class="demophone" id="demoPhone" hidden>
+  <div class="notch"></div>
+  <iframe id="frameAnd" title="SS1 Tool for Android demo" loading="lazy"></iframe>
+ </div>
+</div>
+<p style="margin-top:22px"><a class="btn p" href="windows.html">Get SS1 Tool for Windows</a> <a class="btn" data-play href="https://play.google.com/store/apps/details?id=com.f3bandit.ss1tool">SS1 Tool for Android on Google Play</a></p>
+<script>
+function demoShow(p){
+ const w=p==="windows";
+ document.getElementById("demoWin").hidden=!w;document.getElementById("demoPhone").hidden=w;
+ document.getElementById("tabWin").setAttribute("aria-selected",w);document.getElementById("tabAnd").setAttribute("aria-selected",!w);
+ const f=document.getElementById(w?"frameWin":"frameAnd");if(!f.src)f.src="demo/"+p+".html";
+ if(w)demoFit();
+ try{history.replaceState(null,"","#"+p)}catch(e){}
+}
+// the Windows window is drawn at 1120 x 760 and scaled down to fit the page
+function demoFit(){const s=document.querySelector(".demoscale"),w=s.clientWidth,k=Math.min(1,w/1120);
+ const f=document.getElementById("frameWin");f.style.transform="scale("+k+")";s.style.height=(760*k)+"px"}
+addEventListener("resize",()=>{if(!document.getElementById("demoWin").hidden)demoFit()});
+demoShow(location.hash==="#android"||(!location.hash&&matchMedia("(max-width:700px)").matches)?"android":"windows");
+</script>

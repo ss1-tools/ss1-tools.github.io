@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Try SS1 Tool</title>
+<meta name="description" content="Try SS1 Tool for Windows and SS1 Tool for Android in your browser, with a pretend SuperStation One. Nothing is installed or changed.">
+<meta name="theme-color" content="#171a21">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+ <a class="brand" href="index.html"><img src="assets/img/icon.png" alt="">SS1 <span>Tools</span></a>
+ <nav aria-label="Site"><a href="index.html">Home</a><a href="windows.html">Windows</a><a href="android.html">Android</a><a href="demo.html" aria-current="page">Try it</a><a href="support.html">Support</a><a href="legal/eula.html">License</a><a href="legal/privacy.html">Privacy</a></nav>
+</div></header>
+<main class="wrap">
+<section class="hero" style="padding-bottom:14px">
+ <h1>Try SS1 <span class="red">Tool</span></h1>
+ <p class="lead">Click through SS1 Tool for Windows and SS1 Tool for Android right here. The demo uses a pretend SuperStation One with sample saves, drives and settings, so nothing you press changes anything.</p>
+ <div class="demotabs" role="tablist">
+  <button class="btn" role="tab" id="tabWin" aria-selected="true" onclick="demoShow('windows')">Windows</button>
+  <button class="btn" role="tab" id="tabAnd" aria-selected="false" onclick="demoShow('android')">Android</button>
+ </div>
+ <p class="muted" style="font-size:14px;margin:10px 0 0">Start on <b>Connect</b> and press <b>Connect</b>: the password is already filled in. The demo always shows the latest version of SS1 Tool.</p>
+</section>
+<div class="demostage">
+ <div class="demowin" id="demoWin">
+  <div class="demobar"><span class="dots"><i></i><i></i><i></i></span><span>SS1 Tool</span></div>
+  <div class="demoscale"><iframe id="frameWin" title="SS1 Tool for Windows demo" loading="lazy"></iframe></div>
+ </div>
+ <div class="demophone" id="demoPhone" hidden>
+  <div class="notch"></div>
+  <iframe id="frameAnd" title="SS1 Tool for Android demo" loading="lazy"></iframe>
+ </div>
+</div>
+<p style="margin-top:22px"><a class="btn p" href="windows.html">Get SS1 Tool for Windows</a> <a class="btn" data-play href="https://play.google.com/store/apps/details?id=com.f3bandit.ss1tool">SS1 Tool for Android on Google Play</a></p>
+<script>
+function demoShow(p){
+ const w=p==="windows";
+ document.getElementById("demoWin").hidden=!w;document.getElementById("demoPhone").hidden=w;
+ document.getElementById("tabWin").setAttribute("aria-selected",w);document.getElementById("tabAnd").setAttribute("aria-selected",!w);
+ const f=document.getElementById(w?"frameWin":"frameAnd");if(!f.src)f.src="demo/"+p+".html";
+ if(w)demoFit();
+ try{history.replaceState(null,"","#"+p)}catch(e){}
+}
+// the Windows window is drawn at 1120 x 760 and scaled down to fit the page
+function demoFit(){const s=document.querySelector(".demoscale"),w=s.clientWidth,k=Math.min(1,w/1120);
+ const f=document.getElementById("frameWin");f.style.transform="scale("+k+")";s.style.height=(760*k)+"px"}
+addEventListener("resize",()=>{if(!document.getElementById("demoWin").hidden)demoFit()});
+demoShow(location.hash==="#android"||(!location.hash&&matchMedia("(max-width:700px)").matches)?"android":"windows");
+</script>
+
+</main>
+<footer><div class="wrap">
+ <nav aria-label="Legal"><a href="legal/eula.html">License agreement (EULA)</a><a href="legal/privacy.html">Privacy policy</a><a href="legal/refunds.html">Refund policy</a><a href="support.html">Support</a><a href="https://github.com/f3bandit/ss1_tool">GitHub</a></nav>
+ <p>SS1 Tool and SS1 Tool for Android are independent, unofficial community tools made by f3bandit (F3 Digital Systems). They are not made, endorsed or supported by Taki Udon, Retro Remake or the MiSTer project. SuperStation One and all other product names are trademarks of their respective owners and are used only to describe compatibility.</p>
+ <p>&copy; 2026 f3bandit, trading as F3 Digital Systems. All rights reserved.</p>
+</div></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>
