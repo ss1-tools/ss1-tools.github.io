@@ -10,7 +10,7 @@ const SITE = {
   testerPlayLink: "https://play.google.com/apps/testing/com.f3bandit.ss1tool",
   androidPrice: "$4.99",
   // The agreement version people accept on this site (also shown on the EULA page).
-  eulaVersion: "1.1 (2026-10-10)",
+  eulaVersion: "1.2 (2026-10-14)",
   windowsDownload: "https://github.com/f3bandit/ss1_tool/releases/latest/download/SS1Tool.exe",
 };
 
