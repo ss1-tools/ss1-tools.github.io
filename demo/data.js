@@ -2304,8 +2304,8 @@ window.DEMO_DATA={
 "image": ""
 },
 "update": {
-"current": "1.28.15",
-"latest": "1.28.15",
+"current": "1.28.16",
+"latest": "1.28.16",
 "available": false,
 "checked": 1792103732,
 "notes": "\r\n<img width=\"256\" height=\"256\" alt=\"icon_256\" src=\"https://github.com/user-attachments/assets/2ad8cd92-2818-4a1e-90df-fe8777ca5987\" />\r\n\r\n\r\nSS1 Tool 1.28.14\r\n## New\r\n- NVMe health: reads the drive's own health log through the SS1 dock (temperature, percentage of rated life used, spare blocks, media errors, unsafe shutdowns, power-on hours, data written). Read-only. Temperature, wear and health also show in System status.\r\n- Back up the SD card to the NVMe drive: the SuperStation copies everything except the games folder to SS1_backup/sdcard on the drive. No PC needed while it runs, and later backups only copy what changed.\r\n- Nightly saves backup: saves and save states are copied to the NVMe/USB drive every night at the hour you pick, one copy per weekday (7 days kept). Runs on the SuperStation itself and keeps working after a restart. Turning it off removes everything it added.\r\n- SD backups now include the system areas: both the PC backup and the NVMe backup save the card's partition table, boot sector and MiSTer bootloader partition, with a README on restoring them.\r\n- WiFi connection quality: signal (Good / Fair / Weak), band, channel and link speed, as the SuperStation sees them.\r\n- Nearby WiFi networks the SuperStation can hear, strongest first, to help pick a less crowded channel.\r\n- Ethernet port and router speed: the fastest speed the SS1's port supports and the fastest the router offers, so a slow link can be traced to the cable, router or port.\r\n- Read speed test for the SD card and drives, with what the result means (the SS1's USB 2.0 tops out around 30-40 MB/s).\r\n- Dashboard: live read/write activity for the SD card and each drive, plus a list of the board's I2C buses.\r\n- Live updates: new screenshots and saves appear in their lists by themselves.\r\n\r\n## Fixed\r\n- The read speed test showed a cut-off drive name on some drives.",
@@ -2331,7 +2331,7 @@ window.DEMO_DATA={
 "connected": false,
 "host": "192.168.1.50",
 "user": "root",
-"version": "1.28.15"
+"version": "1.28.16"
 },
 "discover": {
 "devices": [
@@ -3707,6 +3707,108 @@ window.DEMO_DATA={
 "dir": true,
 "size": 0,
 "mtime": 1791459388
+}
+]
+},
+"_mc": {
+"cards": [
+{
+"name": "Living room card",
+"real": true,
+"versions": [
+"2026-10-02_191540",
+"2026-10-09_204112",
+"2026-10-16_142403"
+],
+"saves": [
+{
+"slot": 1,
+"blocks": [
+1,
+2
+],
+"name": "BASLUS-00067DRACULA",
+"product": "SLUS-00067",
+"region": "USA",
+"title": "CASTLEVANIA SOTN - ALUCARD 200.6%",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAi0lEQVR4nLWTsQ2AMAwEnRRMwBCuqVJkGEZjGApX1BmCCdKYygiHyEmQ+PLlO31jgD9DiEyIbN14CwYAWLYZLElV8ISP9VRdU1CDJZniS6IEFixducSPwOXtLRiBpRPGtw5bnavN6oFDSk4tkGIEVgskmSL3wmqBZAq7OrBgM4TImSL3/IMp+Qz35gI//nI3KIJuBgAAAABJRU5ErkJggg=="
+},
+{
+"slot": 3,
+"blocks": [
+3
+],
+"name": "BASCUS-94163FF7-S01",
+"product": "SCUS-94163",
+"region": "USA",
+"title": "FF7 - CLOUD - MIDGAR 12:04",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAd0lEQVR4nGNgGGjAiE3QpuLOfxh7QZ4yQ8KkuwwMDAwMRzpUMNSjCCBrRNeMLKYixQjXx4TLabg0o4vBDcDlbGxiyGoxXECszVgNIFbzgjxlTANI0YwsBjeAHM0YXiBVM4oBsERCjGbkBEVWICIDvEkZn82DBwAAEtZZFopIOCQAAAAASUVORK5CYII="
+},
+{
+"slot": 4,
+"blocks": [
+4
+],
+"name": "BASCUS-94426CTR",
+"product": "SCUS-94426",
+"region": "USA",
+"title": "CRASH TEAM RACING - ADVENTURE",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAdUlEQVR4nO2Quw0AMQhDEQtkAwZjkgyROTJaam4CroqUD+Sja881tp8B+LWUJFJJpKsb/FriBrTNWqJLsSUIzPDkfEdQ21uz94spwDJXWVNMAsvsTekCJJHuzOMU9A53zVOAlqgn5sDcUeCteZyCAHCE7U15AZ/CWPuMzJUBAAAAAElFTkSuQmCC"
+},
+{
+"slot": 5,
+"blocks": [
+5
+],
+"name": "BASCUS-94488GT2",
+"product": "SCUS-94488",
+"region": "USA",
+"title": "GRAN TURISMO 2 - SIMULATION",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAS0lEQVR4nGNgGGjACGNERaX87zl3hKHEyAZFAS4xqRs3GBkYGBiYCCkkJAY3gBzNKAaQoxmrAaRoxjCAlHDAMGA0EEnTTNVAHHgAAN0YXRhpy6d2AAAAAElFTkSuQmCC"
+}
+]
+},
+{
+"name": "RPG card",
+"real": false,
+"versions": [
+"2026-10-12_101500"
+],
+"saves": [
+{
+"slot": 1,
+"blocks": [
+1
+],
+"name": "BASLUS-00670FFT01",
+"product": "SLUS-00670",
+"region": "USA",
+"title": "FINAL FANTASY TACTICS - CH.2",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhklEQVR4nL2SwQ2AIBAEB2MVVmAJlmElvimBt5VcGZZgBbahP6NwwOFDnhtmCJt1KOfY/LkGeWWLnxmm4OK7nSbQ4DgrCqxwVVCDiwILDNDnCtMykDPOnJ/HJLQK1yDvL7TC8OjgC3wLvsIArqVELUumCZArNshum3LtZbPglyWqgvwS03MB1eJnPfAAN+IAAAAASUVORK5CYII="
+},
+{
+"slot": 2,
+"blocks": [
+2
+],
+"name": "BASLUS-00958SUIKO2",
+"product": "SLUS-00958",
+"region": "USA",
+"title": "SUIKODEN II - NORTH WINDOW",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAoElEQVR4nK2RMRZAQAxExxbOolI7i8oJVApHUKicQOUsapWzaFYVL9mEF4/fiZns7gzwkcwaFmMd+ffc9mimAXu3KH3wmq1/asGTmViPTWiuK3GzdVUy00LSBK8ZAKq8VAeqDLzMbQ+1gIYes8imGOu4Hlu0Uk4hnXiClfYdqS5YwzcEQCaf9syx2hKV8Z4J63n8QNEC79ljVgu4wGP+hRPVq2NykB0JgQAAAABJRU5ErkJggg=="
+},
+{
+"slot": 3,
+"blocks": [
+3
+],
+"name": "BASCUS-94163FF7-S01",
+"product": "SCUS-94163",
+"region": "USA",
+"title": "FF7 - CLOUD - MIDGAR 12:04",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAd0lEQVR4nGNgGGjAiE3QpuLOfxh7QZ4yQ8KkuwwMDAwMRzpUMNSjCCBrRNeMLKYixQjXx4TLabg0o4vBDcDlbGxiyGoxXECszVgNIFbzgjxlTANI0YwsBjeAHM0YXiBVM4oBsERCjGbkBEVWICIDvEkZn82DBwAAEtZZFopIOCQAAAAASUVORK5CYII="
+}
+]
 }
 ]
 }

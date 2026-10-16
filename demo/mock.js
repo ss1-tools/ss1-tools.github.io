@@ -86,7 +86,136 @@
     return { connected: true, starting: false, error: "", age_ms: 40, data: { core: "MENU", cm: true, usb: [u], snac: [sn], software: 0, snac_err: "" } };
   }
 
+  // ---- memory cards: a pretend library and a pretend card in front port 1
+  const MC = { lib: null, job: null, jobId: 0, answer: null, askId: 0 };
+  function mcLib() {
+    if (!MC.lib) MC.lib = clone((D._mc && D._mc.cards) || []);
+    return MC.lib;
+  }
+  const mcFree = (c) => 15 - c.saves.reduce((a, s) => a + s.blocks.length, 0);
+  function mcCardsList() {
+    return mcLib().map((c) => ({ name: c.name, created: now() - 86400 * 14, real: c.real, versions: c.versions.slice(),
+      latest: c.versions[c.versions.length - 1], saves: c.saves.length, free: mcFree(c) }));
+  }
+  const mcFind = (n) => mcLib().find((c) => c.name === n);
+  const mcVer = () => { const d = new Date(), z = (v) => String(v).padStart(2, "0");
+    return `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}`; };
+  function mcPlace(card, s) { // the save goes into the first free blocks
+    const used = new Set(); card.saves.forEach((x) => x.blocks.forEach((b) => used.add(b)));
+    const free = []; for (let b = 1; b <= 15 && free.length < s.blocks.length; b++) if (!used.has(b)) free.push(b);
+    if (free.length < s.blocks.length) throw new Error(`the save needs ${s.blocks.length} blocks, the card has ${15 - used.size} free`);
+    const n = clone(s); n.blocks = free; n.slot = free[0]; return n;
+  }
+  function mcEdit(b) {
+    const L = mcLib(), src = mcFind(b.name);
+    switch (b.op) {
+      case "new": { if (mcFind(b.new_name)) throw new Error(`there's already a card called "${b.new_name}"`); L.push({ name: b.new_name, real: false, versions: [mcVer()], saves: [] }); return { ok: true, name: b.new_name }; }
+      case "rename": src.name = b.new_name; return { ok: true, name: b.new_name };
+      case "delete": L.splice(L.indexOf(src), 1); return { ok: true };
+      case "delversion": if (src.versions.length < 2) throw new Error("a card keeps at least one version: delete the card instead"); src.versions = src.versions.filter((v) => v !== b.version); return { ok: true };
+      case "copy": case "move": {
+        const to = mcFind(b.to); if (!to) throw new Error("pick another card to copy to");
+        const pick = src.saves.filter((s) => b.slots.includes(s.slot));
+        pick.forEach((s) => { if (to.saves.some((x) => x.name === s.name)) throw new Error(`the card already has this save (${s.name})`); to.saves.push(mcPlace(to, s)); });
+        to.versions.push(mcVer());
+        if (b.op === "move") { src.saves = src.saves.filter((s) => !b.slots.includes(s.slot)); src.versions.push(mcVer()); }
+        return { ok: true };
+      }
+      case "remove": src.saves = src.saves.filter((s) => !b.slots.includes(s.slot)); src.versions.push(mcVer()); return { ok: true };
+    }
+    throw new Error("unknown change");
+  }
+  // a job runs on a timeline: reading (green), maybe a question, writing (blue), then 5 s before going back
+  function mcStart(b) {
+    const port = mcFind("Living room card");
+    const j = { id: ++MC.jobId, action: b.action, t0: Date.now(), menu: b.menu, log: [], ask: "", askId: 0, writeT: 0, blue: [], done: false };
+    const titles = { backup: "Back up the memory card", verify: "Check the memory card against " + b.name, restore: "Put " + b.name + " on the memory card" };
+    j.title = titles[b.action] || `Copy ${(b.slots || []).length} save(s) to the memory card`;
+    if (b.action === "copy" || b.action === "restore") {
+      const src = mcFind(b.name);
+      j.saves = src.saves.filter((s) => b.action === "restore" || (b.slots || []).includes(s.slot));
+      const dup = j.saves.find((s) => port && port.saves.some((x) => x.name === s.name));
+      if (b.action === "copy" && dup) j.question = `The save "${dup.title}" (${dup.product}) on the card in front port 1 is identical to the one you're copying. Overwrite it anyway?`;
+      j.saves.forEach((s) => s.blocks.forEach((bl) => { j.blue.push(bl); for (let f = 0; f < 64; f++) j.blue.push(bl * 64 + f); }));
+    }
+    MC.job = j; MC.answer = null;
+    return j;
+  }
+  function mcSnap() {
+    const j = MC.job;
+    if (!j) return { id: 0, running: false, title: "", step: "", map: "0".repeat(1024), log: [] };
+    const t = (Date.now() - j.t0) / 1000, writes = j.action === "copy" || j.action === "restore";
+    const rd = 6, label1 = writes ? "Step 1 of 2: reading the card (safety backup). Nothing is written yet" : j.action === "verify" ? "Checking the card" : "Reading the card";
+    const out = { id: j.id, running: true, title: j.title, job: writes ? 3 : j.action === "verify" ? 2 : 1, phase: 3, sector: 0, done: 0, ok: 0, retried: 0, failed: 0, differ: 0, written: 0,
+      result: 0, message: "", error: "", card: "", version: "", ask: "", ask_id: 0, log: ["Preparing the files on the SuperStation", "Starting the memory card core"] };
+    const fill = (n, c) => "1".repeat(n).replace(/1/g, c) + "0".repeat(1024 - n);
+    if (t < 1) { out.step = "Starting the memory card core"; out.map = "0".repeat(1024); return out; }
+    if (t < 1 + rd) { const n = Math.floor(((t - 1) / rd) * 1024); out.step = label1; out.sector = n; out.done = out.ok = n; out.map = fill(n, "1"); out.log.push(label1); return out; }
+    out.log.push(label1, "Copying the backup to this PC", 'Recognised the card as "Living room card" (100% of its saves match)');
+    let tEnd = 1 + rd;
+    if (writes) {
+      if (j.question && MC.answer === null) {
+        out.phase = 5; out.step = "Waiting for your answer"; out.map = fill(1024, "1"); out.done = out.ok = 1024; out.ask = j.question; out.ask_id = 1; out.log.push("Asking: " + j.question);
+        return out;
+      }
+      if (j.question && !j.writeT) { j.writeT = Date.now(); j.answered = MC.answer; }
+      if (!j.writeT) j.writeT = j.t0 + tEnd * 1000;
+      const tw = (Date.now() - j.writeT) / 1000, wd = 4;
+      if (j.question && j.answered === false) { out.log.push("Answer: no", "The card already has all of that: nothing to write"); j.nothing = true; tEnd = (j.writeT - j.t0) / 1000; }
+      else {
+        if (j.question) out.log.push("Answer: yes");
+        out.log.push("Step 2 of 2: writing to the card");
+        if (tw < wd) { const n = Math.floor((tw / wd) * 1024); const m = fill(n, "1").split(""); j.blue.forEach((s) => { if (s < n) m[s] = "5"; });
+          out.step = "Step 2 of 2: writing to the card"; out.sector = n; out.done = n; out.written = j.blue.filter((s) => s < n).length; out.ok = n - out.written; out.map = m.join(""); return out; }
+        tEnd = (j.writeT - j.t0) / 1000 + wd;
+      }
+    }
+    out.phase = 5; // the core's report is written
+    const m = fill(1024, "1").split(""); if (writes && !j.nothing) j.blue.forEach((s) => (m[s] = "5"));
+    out.map = m.join(""); out.done = 1024; out.written = writes && !j.nothing ? j.blue.length : 0; out.ok = 1024 - out.written;
+    const left = j.menu ? 5 - Math.floor(t - tEnd) : 0;
+    if (left > 0) { out.step = `Finished: going back in ${left} s`; return out; }
+    if (!j.done) { // apply the result to the library once
+      j.done = true;
+      const port = mcFind("Living room card");
+      if (writes && !j.nothing && port) {
+        if (j.action === "restore") port.saves = clone(j.saves);
+        else j.saves.forEach((s) => { const i = port.saves.findIndex((x) => x.name === s.name); if (i >= 0) port.saves.splice(i, 1); port.saves.push(mcPlace(port, s)); });
+        port.versions.push(mcVer());
+      }
+    }
+    out.running = false; out.step = "";
+    out.message = j.nothing ? "Nothing to write: the card already has it" : writes ? "The card was updated and checked" : j.action === "verify" ? "The card matches" : "Done";
+    out.result = writes ? 9 : 1; out.card = j.action === "verify" ? "" : "Living room card";
+    out.log = out.log.concat(j.menu ? ["Going back to Console Mode", "Console Mode is back"] : []).concat(["Demo: nothing was read or written. This is sample progress"]);
+    return out;
+  }
+  function mcHandle(method, path, q, body) {
+    switch (path) {
+      case "mc/state":
+        return [200, { library: mcCardsList(), dir: "C:\\Users\\Player\\SS1Tool\\memcards", installed: S.connected ? "SS1_MemCard_20261016.rbf" : undefined,
+          update: false, latest: { tag: "v1.0", name: "SS1_MemCard_20261016.rbf", unstable: false }, core: S.connected ? "MENU" : undefined, console_mode: S.connected ? true : undefined, job: mcSnap() }];
+      case "mc/progress": return [200, mcSnap()];
+      case "mc/card": {
+        const c = mcFind(q.get("name"));
+        if (!c) return [404, { error: "no such card" }];
+        return [200, { card: { formatted: true, saves: clone(c.saves), free: mcFree(c) }, versions: c.versions.slice(), meta: { real: c.real } }];
+      }
+      case "mc/run":
+        if (!S.connected) return [409, { error: "not connected to a SuperStation" }];
+        if (MC.job && mcSnap().running) return [409, { error: "a memory card job is already running" }];
+        mcStart(body || {}); return [200, { ok: true }];
+      case "mc/answer": MC.answer = !!(body && body.yes); return [200, { ok: true }];
+      case "mc/stop": MC.job = null; return [200, { ok: true }];
+      case "mc/edit": try { return [200, mcEdit(body || {})]; } catch (e) { return [400, { error: e.message }]; }
+      case "mc/install": return [400, { error: "Demo: the core would be downloaded from GitHub and copied to /media/fat/_Utility. Nothing was changed." }];
+      case "mc/open": return [200, { ok: true }];
+    }
+    return null;
+  }
+
   function handle(method, path, q, body) {
+    if (path.startsWith("mc/")) { const r = mcHandle(method, path, q, body); if (r) return r; }
     const need = () => (S.connected ? null : [409, { error: "not connected to a SuperStation" }]);
     const get = (k) => (k in D ? clone(D[k]) : null);
     switch (path) {

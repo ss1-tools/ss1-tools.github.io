@@ -3709,5 +3709,107 @@
 "mtime": 1791459388
 }
 ]
+},
+"_mc": {
+"cards": [
+{
+"name": "Living room card",
+"real": true,
+"versions": [
+"2026-10-02_191540",
+"2026-10-09_204112",
+"2026-10-16_142403"
+],
+"saves": [
+{
+"slot": 1,
+"blocks": [
+1,
+2
+],
+"name": "BASLUS-00067DRACULA",
+"product": "SLUS-00067",
+"region": "USA",
+"title": "CASTLEVANIA SOTN - ALUCARD 200.6%",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAi0lEQVR4nLWTsQ2AMAwEnRRMwBCuqVJkGEZjGApX1BmCCdKYygiHyEmQ+PLlO31jgD9DiEyIbN14CwYAWLYZLElV8ISP9VRdU1CDJZniS6IEFixducSPwOXtLRiBpRPGtw5bnavN6oFDSk4tkGIEVgskmSL3wmqBZAq7OrBgM4TImSL3/IMp+Qz35gI//nI3KIJuBgAAAABJRU5ErkJggg=="
+},
+{
+"slot": 3,
+"blocks": [
+3
+],
+"name": "BASCUS-94163FF7-S01",
+"product": "SCUS-94163",
+"region": "USA",
+"title": "FF7 - CLOUD - MIDGAR 12:04",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAd0lEQVR4nGNgGGjAiE3QpuLOfxh7QZ4yQ8KkuwwMDAwMRzpUMNSjCCBrRNeMLKYixQjXx4TLabg0o4vBDcDlbGxiyGoxXECszVgNIFbzgjxlTANI0YwsBjeAHM0YXiBVM4oBsERCjGbkBEVWICIDvEkZn82DBwAAEtZZFopIOCQAAAAASUVORK5CYII="
+},
+{
+"slot": 4,
+"blocks": [
+4
+],
+"name": "BASCUS-94426CTR",
+"product": "SCUS-94426",
+"region": "USA",
+"title": "CRASH TEAM RACING - ADVENTURE",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAdUlEQVR4nO2Quw0AMQhDEQtkAwZjkgyROTJaam4CroqUD+Sja881tp8B+LWUJFJJpKsb/FriBrTNWqJLsSUIzPDkfEdQ21uz94spwDJXWVNMAsvsTekCJJHuzOMU9A53zVOAlqgn5sDcUeCteZyCAHCE7U15AZ/CWPuMzJUBAAAAAElFTkSuQmCC"
+},
+{
+"slot": 5,
+"blocks": [
+5
+],
+"name": "BASCUS-94488GT2",
+"product": "SCUS-94488",
+"region": "USA",
+"title": "GRAN TURISMO 2 - SIMULATION",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAS0lEQVR4nGNgGGjACGNERaX87zl3hKHEyAZFAS4xqRs3GBkYGBiYCCkkJAY3gBzNKAaQoxmrAaRoxjCAlHDAMGA0EEnTTNVAHHgAAN0YXRhpy6d2AAAAAElFTkSuQmCC"
+}
+]
+},
+{
+"name": "RPG card",
+"real": false,
+"versions": [
+"2026-10-12_101500"
+],
+"saves": [
+{
+"slot": 1,
+"blocks": [
+1
+],
+"name": "BASLUS-00670FFT01",
+"product": "SLUS-00670",
+"region": "USA",
+"title": "FINAL FANTASY TACTICS - CH.2",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhklEQVR4nL2SwQ2AIBAEB2MVVmAJlmElvimBt5VcGZZgBbahP6NwwOFDnhtmCJt1KOfY/LkGeWWLnxmm4OK7nSbQ4DgrCqxwVVCDiwILDNDnCtMykDPOnJ/HJLQK1yDvL7TC8OjgC3wLvsIArqVELUumCZArNshum3LtZbPglyWqgvwS03MB1eJnPfAAN+IAAAAASUVORK5CYII="
+},
+{
+"slot": 2,
+"blocks": [
+2
+],
+"name": "BASLUS-00958SUIKO2",
+"product": "SLUS-00958",
+"region": "USA",
+"title": "SUIKODEN II - NORTH WINDOW",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAoElEQVR4nK2RMRZAQAxExxbOolI7i8oJVApHUKicQOUsapWzaFYVL9mEF4/fiZns7gzwkcwaFmMd+ffc9mimAXu3KH3wmq1/asGTmViPTWiuK3GzdVUy00LSBK8ZAKq8VAeqDLzMbQ+1gIYes8imGOu4Hlu0Uk4hnXiClfYdqS5YwzcEQCaf9syx2hKV8Z4J63n8QNEC79ljVgu4wGP+hRPVq2NykB0JgQAAAABJRU5ErkJggg=="
+},
+{
+"slot": 3,
+"blocks": [
+3
+],
+"name": "BASCUS-94163FF7-S01",
+"product": "SCUS-94163",
+"region": "USA",
+"title": "FF7 - CLOUD - MIDGAR 12:04",
+"icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAd0lEQVR4nGNgGGjAiE3QpuLOfxh7QZ4yQ8KkuwwMDAwMRzpUMNSjCCBrRNeMLKYixQjXx4TLabg0o4vBDcDlbGxiyGoxXECszVgNIFbzgjxlTANI0YwsBjeAHM0YXiBVM4oBsERCjGbkBEVWICIDvEkZn82DBwAAEtZZFopIOCQAAAAASUVORK5CYII="
+}
+]
+}
+]
 }
 }
