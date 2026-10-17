@@ -258,7 +258,34 @@
     return null;
   }
 
+  // ---- sync: pretend this device last synced an hour ago
+  const SY = { auto: false, last: Math.floor(Date.now() / 1000) - 3600, on: "/media/usb0" };
+  const SYD = [
+    { path: "/media/usb0", label: "NVMe", dev: "/dev/nvme0n1p1", writable: true, total_kb: 976762584, free_kb: 512331776 },
+    { path: "/media/usb1", label: "USB drive", dev: "/dev/sda1", writable: true, total_kb: 62522712, free_kb: 41203520 },
+    { path: "/media/fat", label: "SD card", dev: "/dev/mmcblk0p1", writable: true, total_kb: 124703488, free_kb: 23117824 },
+  ];
+  function syncHandle(method, path, body) {
+    const st = () => ({ running: false, last: SY.last, sent: 0, received: 2, where: SY.on + "/SS1Tool_sync", kept: [], elsewhere: [] });
+    switch (path) {
+      case "sync/state": return [200, { state: st(), auto: SY.auto, device: "Demo PC" }];
+      case "sync/run":
+        if (!S.connected) return [409, { error: "not connected to a SuperStation" }];
+        SY.last = Math.floor(Date.now() / 1000); return [200, { ok: true }];
+      case "sync/auto": SY.auto = !!(body && body.on); return [200, { ok: true }];
+      case "sync/remove": return [200, { removed: 0 }];
+      case "sync/drives":
+        if (!S.connected) return [409, { error: "not connected to a SuperStation" }];
+        return [200, { current: SY.on, folder: true, drives: SYD.map((d) => Object.assign({}, d, { folder: d.path === SY.on, used_kb: d.path === SY.on ? 48620 : 0 })) }];
+      case "sync/drive":
+        if (!S.connected) return [409, { error: "not connected to a SuperStation" }];
+        SY.on = (body && body.path) || SY.on; return [200, { ok: true }];
+    }
+    return null;
+  }
+
   function handle(method, path, q, body) {
+    if (path.startsWith("sync/")) { const r = syncHandle(method, path, body); if (r) return r; }
     if (path.startsWith("mc/")) { const r = mcHandle(method, path, q, body); if (r) return r; }
     if (path.startsWith("snactest/") || path.startsWith("psxcfg/") || path.startsWith("padcore/")) { const r = snacHandle(method, path, body); if (r) return r; }
     const need = () => (S.connected ? null : [409, { error: "not connected to a SuperStation" }]);
