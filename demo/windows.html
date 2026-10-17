@@ -426,7 +426,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </style>
 </head>
 <body><div id="demoBar">Demo: nothing you press changes anything</div>
-<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.28.19</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
+<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.28.20</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
 <div id="aUpd" class="updbanner" style="display:none"></div>
 <div id="updBanner" class="updbanner pc-only no-steam" style="display:none"><span id="updBannerText"></span><button class="b p" id="updBannerGo" onclick="updInstall()">Restart now</button><button class="b" id="updBannerNotes" style="display:none" onclick="updShowNotes()">What's new</button><button class="b" onclick="updSnooze()">Not now</button></div>
 <div class="wrap">
@@ -757,7 +757,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </div>
 <div class="subpage pc-only win-only" id="sdbackup">
  <h2>SD card backup</h2><p class="sub">Copies everything on the SuperStation's SD card <b>except the games folder</b> to this PC: settings, saves, cores, Scripts, Console Mode, linux and so on.</p>
- <div class="card"><h3>New backup</h3><p>Backups are saved in <code>backup\sdcard\&lt;name&gt;_&lt;date-time&gt;</code> next to SS1Tool.exe, with the same folders and file names as on the card. The SuperStation stays usable while it runs, but avoid saving games or changing settings until it finishes.</p>
+ <div class="card"><h3>New backup</h3><p>Backups are saved in <code>backups\sdcard\&lt;name&gt;_&lt;date-time&gt;</code> next to SS1Tool.exe, with the same folders and file names as on the card. The SuperStation stays usable while it runs, but avoid saving games or changing settings until it finishes.</p>
   <div class="row"><input id="sbName" size="34" placeholder="Backup name (optional), e.g. before update"><button class="b p" onclick="sdBackupStart()">Back up SD card</button><button class="b d" id="sbCancel" style="display:none" onclick="sdBackupCancel()">Cancel</button><button class="b" onclick="sdBackupOpen('')">Open backups folder</button></div>
   <div class="bar" id="sbBarWrap" style="display:none"><div id="sbBar"></div></div><pre class="out" id="sbOut" style="display:none"></pre></div>
  <div class="card"><h3>Backups on this PC</h3><p class="muted" id="sbDir"></p>
@@ -989,7 +989,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
  <div class="card about">
   
   <h2 style="font-size:28px;margin:0">SS1 Tool</h2>
-  <p class="muted" style="margin:2px 0 16px">Version 1.28.19</p>
+  <p class="muted" style="margin:2px 0 16px">Version 1.28.20</p>
   <p style="font-size:16px;margin:0 0 6px">Developed by <b>f3bandit</b></p>
   <p style="margin:0 0 18px">Unofficial Super Station One Tools</p>
   <p style="margin:0 0 18px">Special thanks to Taki Udon and all the admins on the Taki Discord.</p>
@@ -1033,7 +1033,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
   <p style="margin-bottom:0">As Android moves on, a future update may raise the minimum version. Android versions below the new minimum won't be supported from then on: the version of SS1 Tool you have keeps working, but it won't get updates or fixes for them. A change to the minimum is listed in the release notes.</p>
   <p class="muted" id="supportThis" style="margin-bottom:0"></p></div>
  <div class="card android-only" id="devCard"><h3>This device</h3><p class="muted" style="margin-top:0">SS1 Tool adjusts its layout to your screen, text size and accessibility settings. If something doesn't fit, include this when you report it.</p><div id="devInfo" class="muted">-</div></div>
- <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.28.19. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
+ <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.28.20. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
   <p id="licInfo" class="muted"></p>
   <div class="row" style="margin-bottom:10px"><button class="b" onclick="demoNav('ss1app://update/check')">Check for updates</button><button class="b" onclick="demoNav('ss1app://eula/view')">License Agreement</button><a class="b" href="https://ss1-tools.github.io/legal/privacy.html" target="_blank" rel="noopener">Privacy policy</a></div>
   <details><summary>Open-source licenses</summary><p class="muted" style="margin-top:8px">SS1 Tool for Android includes the Go programming language's standard library and the Go projects golang.org/x/crypto, golang.org/x/sys and golang.org/x/image, under this license:</p>
@@ -1093,7 +1093,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre></deta
  <div class="row" style="justify-content:flex-end"><button class="b" onclick="closeModal()">Close</button><button class="b p" id="mBtn" onclick="reconnect()">Reconnect</button></div>
 </div></div>
 <div id="toast"></div>
-<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.28.19</span></div></div>
+<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.28.20</span></div></div>
 <script>
 // Recent app errors, kept for the app problem report (addresses and other identifying details removed).
 const APPLOG=[];
@@ -1227,7 +1227,7 @@ async function loadStatus(quiet){try{if(!ADV)await loadAdvisory();showStatus(awa
 let LASTSTATUS=null,WARNEDGEN4="";
 const DRIVE_HIGH_W=7; // drives rated above this can overload the SS1 dock
 // GitHub issue form for a drive that isn't in the drive list (filled in with what the drive reported)
-function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.28.19"+(ANDROID?" (Android)":"")});
+function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.28.20"+(ANDROID?" (Android)":"")});
  return "https://github.com/f3bandit/ss1_tool/issues/new?"+u.toString()}
 function showStatus(s){LASTSTATUS=s;
   const yes=v=>v==="1"?'<span class="pill good">installed</span>':'<span class="pill warn">not installed</span>';
@@ -2619,7 +2619,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("## SS1 Tool for Android: app problem report","");
   add("Where",where);add("Problem",types.join(", ")||"not given");
   L.push("","### What happened","",maskText($("repText").value.trim(),privWords())||"(not described)","","### App");
-  add("SS1 Tool",(d.app_version||"1.28.19")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
+  add("SS1 Tool",(d.app_version||"1.28.20")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
   L.push("","### Device");
   add("Model",d.model);add("Android",d.android?`${d.android} (API ${d.sdk})`:"");add("Type",d.form&&`${d.form}, ${d.orientation}`);
   add("Screen",d.px&&`${d.px} px, ${d.dp} dp, ${d.dpi} dpi`);add("Page size",`${document.documentElement.clientWidth}x${innerHeight} CSS px at ${devicePixelRatio}x`);
@@ -2641,7 +2641,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("","---","_No personal data: no IP or MAC addresses, network names, passwords, accounts, device IDs or location._");
   REPORT=L.join("\n");
   const bs=getComputedStyle(document.body);
-  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.28.19",store:d.store||"",made:new Date().toISOString(),where,types,
+  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.28.20",store:d.store||"",made:new Date().toISOString(),where,types,
    viewport:{w:document.documentElement.clientWidth,h:innerHeight,dpr:devicePixelRatio},font:{body:bs.fontSize,family:bs.fontFamily},
    device:{model:d.model,android:d.android,sdk:d.sdk,form:d.form,orientation:d.orientation,px:d.px,dp:d.dp,dpi:d.dpi,display_size:d.display_size,font_scale:d.font_scale,text_zoom:d.text_zoom,bold_text:d.bold_text,high_contrast_text:d.high_contrast_text,magnification:d.magnification,webview:d.webview,navigation:d.navigation,multi_window:d.multi_window},
    autoFixed:window.AFIXED||[],log:APPLOG,pages:REPSNAP?REPSNAP.pages:[]});
