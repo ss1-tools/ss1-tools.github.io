@@ -86,7 +86,7 @@
     return { connected: true, starting: false, error: "", age_ms: 40, data: { core: "MENU", cm: true, usb: [u], snac: [sn], software: 0, snac_err: "" } };
   }
 
-  // ---- SNAC controller test: the memory card core reading both front ports (a DualShock with a
+  // ---- SNAC controller test: the controller tester core reading both front ports (a DualShock with a
   // card in port 1, a digital pad in port 2), and the PSX core's SNAC settings
   const SN = { test: null, psx: { pad1: 10, pad2: 0, memcard: 1, multitap: 0, exists: true } };
   const PSX_PADS = ["Dualshock (USB)", "Off", "Digital (USB)", "Analog (USB)", "GunCon", "NeGcon", "Wheel-NegCon", "Wheel-Analog", "Mouse", "Justifier", "SNAC", "Analog Joystick", "Pop'n"];
@@ -108,6 +108,10 @@
   }
   function snacHandle(method, path, body) {
     switch (path) {
+      case "padcore/state":
+        return [200, { installed: S.connected ? "SS1_Controller_Tester_20261017.rbf" : undefined, update: false,
+          latest: { tag: "v1.0", name: "SS1_Controller_Tester_20261017.rbf", unstable: false, built: "2026-10-17T19:50:00Z" } }];
+      case "padcore/install": return [400, { error: "Demo: the controller tester core would be downloaded from GitHub and copied to /media/fat/_Utility. Nothing was changed." }];
       case "snactest/start":
         if (!S.connected) return [409, { error: "not connected to a SuperStation" }];
         SN.test = Date.now(); return [200, { ok: true }];
@@ -234,7 +238,7 @@
     switch (path) {
       case "mc/state":
         return [200, { library: mcCardsList(), dir: "C:\\Users\\Player\\SS1Tool\\memcards", installed: S.connected ? "SS1_MemCard_20261017.rbf" : undefined,
-          update: false, latest: { tag: "v1.0", name: "SS1_MemCard_20261017.rbf", unstable: false, built: "2026-10-17T00:23:38Z" }, core: S.connected ? "MENU" : undefined, console_mode: S.connected ? true : undefined, job: mcSnap() }];
+          update: false, latest: { tag: "v1.1", name: "SS1_MemCard_20261017.rbf", unstable: false, built: "2026-10-17T20:04:19Z" }, core: S.connected ? "MENU" : undefined, console_mode: S.connected ? true : undefined, job: mcSnap() }];
       case "mc/progress": return [200, mcSnap()];
       case "mc/card": {
         const c = mcFind(q.get("name"));
@@ -256,7 +260,7 @@
 
   function handle(method, path, q, body) {
     if (path.startsWith("mc/")) { const r = mcHandle(method, path, q, body); if (r) return r; }
-    if (path.startsWith("snactest/") || path.startsWith("psxcfg/")) { const r = snacHandle(method, path, body); if (r) return r; }
+    if (path.startsWith("snactest/") || path.startsWith("psxcfg/") || path.startsWith("padcore/")) { const r = snacHandle(method, path, body); if (r) return r; }
     const need = () => (S.connected ? null : [409, { error: "not connected to a SuperStation" }]);
     const get = (k) => (k in D ? clone(D[k]) : null);
     switch (path) {
