@@ -86,6 +86,46 @@
     return { connected: true, starting: false, error: "", age_ms: 40, data: { core: "MENU", cm: true, usb: [u], snac: [sn], software: 0, snac_err: "" } };
   }
 
+  // ---- SNAC controller test: the memory card core reading both front ports (a DualShock with a
+  // card in port 1, a digital pad in port 2), and the PSX core's SNAC settings
+  const SN = { test: null, psx: { pad1: 10, pad2: 0, memcard: 1, multitap: 0, exists: true } };
+  const PSX_PADS = ["Dualshock (USB)", "Off", "Digital (USB)", "Analog (USB)", "GunCon", "NeGcon", "Wheel-NegCon", "Wheel-Analog", "Mouse", "Justifier", "SNAC", "Analog Joystick", "Pop'n"];
+  function snacTestState() {
+    if (!SN.test) return { on: false, running: false, error: "" };
+    const t = Date.now() - SN.test, a = t / 700;
+    if (t < 2500) return { on: true, running: false, starting: true, error: "" };
+    const dsHas = ["a", "b", "x", "y", "back", "start", "l1", "r1", "l2", "r2", "l3", "r3", "up", "down", "left", "right", "ls", "rs"];
+    const p1 = { id: "snac1", name: "PlayStation controller in port 1", db_name: "", kind: "snaccore", vidpid: ":", ctl: pad(dsHas, t), extra: [], held: [],
+      axes: [{ name: "X", v: Math.cos(a) * 0.9 }, { name: "Y", v: Math.sin(a) * 0.9 }, { name: "RX", v: 0 }, { name: "RY", v: -0.8 }] };
+    p1.ctl.ls = { has: true, on: true, x: Math.cos(a) * 0.9, y: Math.sin(a) * 0.9 };
+    p1.ctl.rs = { has: true, on: true, x: 0, y: -0.8 };
+    const digHas = ["a", "b", "x", "y", "back", "start", "l1", "r1", "l2", "r2", "up", "down", "left", "right"];
+    const p2 = { id: "snac2", name: "PlayStation controller in port 2", db_name: "", kind: "snaccore", vidpid: ":", ctl: pad(digHas, t + 2000, true), extra: [], held: [], axes: [] };
+    return { on: true, running: true, error: "", age_ms: 40,
+      ports: [{ port: 1, present: true, card: 1, switched: true, type: "Analog (DualShock)", id: "73", analog: true, snac: [p1] },
+              { port: 2, present: true, card: 0, switched: true, type: "Digital pad", id: "41", analog: false, snac: [p2] }],
+      wiring: { port1: [3, 4], port2: [3, 4], pin6: [], pin6_answer: false, pin6_id: "00" } };
+  }
+  function snacHandle(method, path, body) {
+    switch (path) {
+      case "snactest/start":
+        if (!S.connected) return [409, { error: "not connected to a SuperStation" }];
+        SN.test = Date.now(); return [200, { ok: true }];
+      case "snactest/state": return [200, snacTestState()];
+      case "snactest/stop": SN.test = null; return [200, { ok: true }];
+      case "psxcfg/state":
+        if (!S.connected) return [409, { error: "not connected to a SuperStation" }];
+        return [200, { settings: clone(SN.psx), running: false, pads: PSX_PADS, multitaps: ["Off", "Port 1: 4 x Digital", "Port 1: 4 x Analog"], file: "/media/fat/config/PSX.CFG",
+          cores: ["_Console/PSX_20260807.rbf", "_Other/PSX2XCPU_20260413.rbf", "_RA_Cores/Cores/PSX.rbf"] }];
+      case "psxcfg/save": {
+        const b = body || {};
+        SN.psx = { pad1: b.pad1 | 0, pad2: b.pad2 | 0, memcard: b.memcard ? 1 : 0, multitap: b.multitap | 0, exists: true };
+        return [200, { ok: true, message: "Demo: the PSX settings would be saved (a copy of PSX.CFG is kept first). Nothing was changed.", settings: clone(SN.psx), running: false }];
+      }
+    }
+    return null;
+  }
+
   // ---- memory cards: a pretend library and a pretend card in front port 1
   const MC = { lib: null, job: null, jobId: 0, answer: null, askId: 0 };
   function mcLib() {
@@ -193,8 +233,8 @@
   function mcHandle(method, path, q, body) {
     switch (path) {
       case "mc/state":
-        return [200, { library: mcCardsList(), dir: "C:\\Users\\Player\\SS1Tool\\memcards", installed: S.connected ? "SS1_MemCard_20261016.rbf" : undefined,
-          update: false, latest: { tag: "v1.0", name: "SS1_MemCard_20261016.rbf", unstable: false }, core: S.connected ? "MENU" : undefined, console_mode: S.connected ? true : undefined, job: mcSnap() }];
+        return [200, { library: mcCardsList(), dir: "C:\\Users\\Player\\SS1Tool\\memcards", installed: S.connected ? "SS1_MemCard_20261017.rbf" : undefined,
+          update: false, latest: { tag: "v1.0", name: "SS1_MemCard_20261017.rbf", unstable: false, built: "2026-10-17T00:23:38Z" }, core: S.connected ? "MENU" : undefined, console_mode: S.connected ? true : undefined, job: mcSnap() }];
       case "mc/progress": return [200, mcSnap()];
       case "mc/card": {
         const c = mcFind(q.get("name"));
@@ -216,6 +256,7 @@
 
   function handle(method, path, q, body) {
     if (path.startsWith("mc/")) { const r = mcHandle(method, path, q, body); if (r) return r; }
+    if (path.startsWith("snactest/") || path.startsWith("psxcfg/")) { const r = snacHandle(method, path, body); if (r) return r; }
     const need = () => (S.connected ? null : [409, { error: "not connected to a SuperStation" }]);
     const get = (k) => (k in D ? clone(D[k]) : null);
     switch (path) {
