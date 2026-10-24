@@ -185,7 +185,7 @@ html[data-platform=android] .jump.tabs a.on{background:var(--acc);border-color:v
 .ethgrid span:first-child{color:var(--dim)}
 #updCard p a,.updnotes a,.card p a:not(.b),.card .muted a:not(.b),.card td a:not(.b){color:#79c0ff}#updPage{text-decoration:none;display:inline-block}
 .updbanner{position:sticky;top:var(--hdr,53px);z-index:24;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px 16px;background:#e3b3411f;border-bottom:1px solid #e3b34159;color:var(--text)}
-.updbanner b{color:var(--warn)}.updbanner a.b{text-decoration:none}
+.updbanner b{color:var(--warn)}.tally{display:flex;gap:8px;margin:6px 0 4px}.tally i{width:46px;height:12px;border-radius:6px;background:var(--panel2);border:1px solid var(--line)}.tally i.on{background:var(--warn);border-color:var(--warn)}.updbanner a.b{text-decoration:none}
 .updnotes{margin-top:12px;border:1px solid var(--line);border-radius:6px;padding:10px 14px;max-height:340px;overflow:auto;font-size:13px;background:var(--panel2)}
 .updnotes h2,.updnotes h3,.updnotes h4{margin:10px 0 6px;font-size:14px}.updnotes ul{margin:4px 0 8px 18px;padding:0}.updnotes li{margin:2px 0}
 .updnotes table{margin:6px 0;font-size:12.5px}.updnotes code{background:var(--bg);padding:0 4px;border-radius:3px}
@@ -432,8 +432,9 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </style>
 </head>
 <body><div id="demoBar">Demo: nothing you press changes anything</div>
-<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.28.21</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
+<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.29.0</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
 <div id="aUpd" class="updbanner" style="display:none"></div>
+<div id="pwrBanner" class="updbanner" style="display:none;background:#f851491a;border-bottom-color:#f8514959"><span><b style="color:var(--bad)">Power supply problem?</b> <span id="pwrBannerText"></span></span><button class="b p" onclick="openPart('diag','power')">What helps</button><button class="b" onclick="$('pwrBanner').style.display='none'">Dismiss</button></div>
 <div id="updBanner" class="updbanner pc-only no-steam" style="display:none"><span id="updBannerText"></span><button class="b p" id="updBannerGo" onclick="updInstall()">Restart now</button><button class="b" id="updBannerNotes" style="display:none" onclick="updShowNotes()">What's new</button><button class="b" onclick="updSnooze()">Not now</button></div>
 <div class="wrap">
 <nav id="nav">
@@ -733,7 +734,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </section>
 <section id="files">
  <h2>Files</h2><p class="sub">Your files on the SuperStation: move and copy them, back up saves and the SD card, take and browse screenshots, and get artwork for Console Mode.</p>
- <div class="jump"><span class="muted">Jump to:</span><a href="#" onclick="jumpTo('fm');return false">File manager</a><a href="#" onclick="jumpTo('saves');return false">Saves</a><a href="#" onclick="jumpTo('nvmebk');return false">Backup to NVMe</a><a href="#" class="win-only" onclick="jumpTo('sdbackup');return false">SD card backup</a><a href="#" onclick="jumpTo('shots');return false">Screenshots</a><a href="#" class="pc-only win-only" onclick="jumpTo('art');return false">Artwork</a><a href="#" onclick="jumpTo('mcards');return false">Memory cards</a></div>
+ <div class="jump"><span class="muted">Jump to:</span><a href="#" onclick="jumpTo('fm');return false">File manager</a><a href="#" onclick="jumpTo('saves');return false">Saves</a><a href="#" onclick="jumpTo('nvmebk');return false">Backup to NVMe</a><a href="#" class="win-only" onclick="jumpTo('sdbackup');return false">SD card backup</a><a href="#" onclick="jumpTo('sysbk');return false">MiSTer &amp; Linux backups</a><a href="#" onclick="jumpTo('shots');return false">Screenshots</a><a href="#" class="pc-only win-only" onclick="jumpTo('art');return false">Artwork</a><a href="#" onclick="jumpTo('mcards');return false">Memory cards</a></div>
 <div class="subpage" id="fm">
  <h2>File manager</h2><p class="sub">Pick a drive on each side to move or copy files between the SD card and the NVMe/USB drive. Tick files, then use the arrows in the middle.</p>
  <div class="panes">
@@ -788,6 +789,28 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
  <div class="card"><h3>Backups on this PC</h3><p class="muted" id="sbDir"></p>
   <table><thead><tr><th>Backup</th><th>Date</th><th>Files</th><th>Size</th><th></th></tr></thead><tbody id="sbList"></tbody></table></div>
 </div>
+<div class="subpage" id="sysbk">
+ <h2>MiSTer &amp; Linux backups</h2><p class="sub">Each time SS1 Tool connects, it checks the parts an update replaces: MiSTer (the main program), the menu core, Linux, and Console Mode's own program files. A version it hasn't saved before is copied here, so you can go back to it if an update breaks something. The same version is never saved twice, a copy that didn't finish is thrown away and made again next time, and nothing is deleted unless you delete it.</p>
+ <div class="card android-only"><h3>On this phone</h3>
+  <label class="ck"><input type="checkbox" id="sysOn" onchange="sysEnable(this)"> Keep MiSTer &amp; Linux backups on this phone</label>
+  <p class="muted" style="margin:6px 0 0">Each Linux version is about 400 MB, and MiSTer and Linux don't update often. Turned off, nothing is saved or synced on this phone; the other devices keep theirs.</p></div>
+ <div class="card"><h3>On the SuperStation now</h3>
+  <table><thead><tr><th>Part</th><th>Version</th><th>File</th><th>Saved here</th></tr></thead><tbody id="sysCur"><tr><td colspan="4" class="muted">Connect to the SuperStation to see its versions.</td></tr></tbody></table>
+  <div class="bar" id="sysBarWrap" style="display:none;margin-top:10px"><div id="sysBar"></div></div>
+  <p class="muted" id="sysMsg" style="margin:8px 0 0"></p>
+  <div class="row" style="margin-top:8px"><button class="b" onclick="sysCheckNow(this)">Check now</button></div></div>
+ <div class="card"><h3>Saved versions</h3><p class="muted" id="sysDir" style="margin:0 0 8px"></p>
+  <table><thead><tr><th style="width:26px"><input type="checkbox" id="sysAll" onchange="document.querySelectorAll('.sysTick').forEach(c=>c.checked=this.checked)"></th><th>Part</th><th>Version</th><th>First seen</th><th>Size</th><th></th><th></th></tr></thead><tbody id="sysList"></tbody></table>
+  <div class="row" style="margin-top:10px"><button class="b" onclick="api('/api/sysbk/open',{})">Open backups folder</button><button class="b d" onclick="sysDelete(this)">Delete ticked</button><span class="muted">Deleting is the only way a saved version goes away.</span></div></div>
+ <div class="card" id="sysSetCard" style="display:none"><h3>Settings a Linux update can reset</h3>
+  <p class="muted" style="margin:0 0 8px">A Linux update puts these back to stock. SS1 Tool keeps a copy of each version and compares them each time it connects.</p>
+  <div id="sysSets"></div></div>
+</div>
+<div id="sysDlg" class="modal" role="dialog" aria-modal="true" style="display:none"><div class="mbox" style="max-width:620px">
+ <h3 id="sysDlgT"></h3><div id="sysDlgB"></div>
+ <p class="muted" style="margin:10px 0 0">The files are copied next to the current ones and checked first; the current ones are only replaced once everything has arrived intact, so a dropped connection changes nothing. <b style="color:var(--warn)">Don't switch the SuperStation off</b> until it has restarted.</p>
+ <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="b" onclick="$('sysDlg').style.display='none'">Cancel</button><button class="b p" id="sysDlgGo">Put back and restart</button></div>
+</div></div>
 <div class="subpage" id="nvmebk">
  <h2>SD card backup to the NVMe drive</h2><p class="sub">The SuperStation copies its own SD card to the NVMe or USB drive, <b>no PC needed</b>. Everything except the games folder is copied: settings, saves, cores, Scripts, Console Mode, linux and so on. The next backup only copies what changed, so it's quick.</p>
  <div class="card"><h3>Back up now</h3>
@@ -825,7 +848,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
   <p class="muted" id="artAcct" style="margin:6px 0 0"></p>
   <div class="row" style="margin-top:8px"><button class="b p" id="artGo" onclick="artStart()">Download artwork for the ticked systems</button><button class="b d" id="artStop" style="display:none" onclick="artCancel(this)">Stop</button></div>
   <div class="bar" id="artBarWrap" style="display:none"><div id="artBar"></div></div><pre class="out" id="artOut" style="display:none"></pre></div>
- <div class="card" id="artResultsCard"><h3>3. Results</h3><p class="muted" style="margin:0 0 8px">Every game by system, with the art it has. For a patched, translated or modded game that wasn't found, type a simpler name (for example the original game's title), search, and pick a match: the art is saved under your game's own name (for a game in its own folder, the folder's name, as Console Mode expects) and copied to the SuperStation straight away. Your game files aren't renamed. Reload Console Mode to see the new art there.</p>
+ <div class="card" id="artResultsCard"><h3>3. Results</h3><p class="muted" style="margin:0 0 8px">Every game by system, with the art it has. Games are recognised by what's in the file first (a cartridge's checksum, or the product code read from the disc), then by name; each shows how it was matched. For a patched, translated or modded game that wasn't found, type a simpler name (for example the original game's title), search, and pick a match: the art is saved under your game's own name (for a game in its own folder, the folder's name, as Console Mode expects) and copied to the SuperStation straight away. Your game files aren't renamed. Reload Console Mode to see the new art there.</p>
   <details class="artspec"><summary>Using your own picture (Upload)</summary><ul style="margin:6px 0 0;padding-left:20px">
    <li><b>File:</b> PNG, JPG, GIF or WebP, up to 30 MB. It's saved as PNG under the game's own name, the way Console Mode expects.</li>
    <li><b>Box art:</b> the front cover, about <b>512 pixels on its longest side</b> (for example 512&times;512, 512&times;720 or 720&times;512). Bigger pictures are fine: SS1 Tool also makes the 512&times;512 optimized copy Console Mode shows. Smaller than 256 pixels looks blurry on a TV.</li>
@@ -941,7 +964,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </section>
 <section id="diag">
  <h2>Diag</h2><p class="sub">Check the SD card, the BIOS files and games folders, collect a debug report when something isn't right, and test controllers.</p>
- <div class="jump"><span class="muted">Jump to:</span><a href="#" onclick="jumpTo('sddiag');return false">SD diagnostics</a><a href="#" onclick="jumpTo('bioscheck');return false">BIOS and game folders</a><a href="#" onclick="jumpTo('debug');return false">Debug report</a><a href="#" onclick="jumpTo('padtest');return false">USB controller tester</a><a href="#" onclick="jumpTo('padsnac');return false">SNAC controller tester</a><a href="#" class="android-only" onclick="openPage('about');setTimeout(()=>jumpTo('appReport'),50);return false">App problem report</a></div>
+ <div class="jump"><span class="muted">Jump to:</span><a href="#" onclick="jumpTo('sddiag');return false">SD diagnostics</a><a href="#" onclick="jumpTo('power');return false">Power</a><a href="#" onclick="jumpTo('bioscheck');return false">BIOS and game folders</a><a href="#" onclick="jumpTo('debug');return false">Debug report</a><a href="#" onclick="jumpTo('padtest');return false">USB controller tester</a><a href="#" onclick="jumpTo('padsnac');return false">SNAC controller tester</a><a href="#" class="android-only" onclick="openPage('about');setTimeout(()=>jumpTo('appReport'),50);return false">App problem report</a></div>
 <div class="subpage" id="sddiag">
  <h2>SD diagnostics</h2><p class="sub">Runs the sd_integrity checks on the SuperStation. Everything here only reads, except <b>Repair file system</b>. Results are also logged to /media/fat/sd_integrity.log.</p>
  <div class="card"><div class="row"><span>Drive:</span><select id="diagTarget"></select><button class="b" onclick="loadTargets()">Refresh drives</button></div>
@@ -962,6 +985,24 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
   </div>
   <p class="muted" style="margin:10px 0 0">Deep scans (read every file, surface read, write/verify) take a long time and run on the SuperStation itself: <a href="#" onclick="term('sd_integrity');return false" style="color:#79c0ff">open sd_integrity in a terminal</a>.</p>
   <pre class="out" id="diagOut">No test run yet.</pre></div>
+</div>
+<div class="subpage" id="power">
+ <h2>Power</h2><p class="sub">A power adapter that can't keep up resets the SuperStation instantly under load: no crash, no error, no log. The power watch catches it: heavy work that started and never finished, with no normal restart in between, means the power went. Switching off while nothing heavy is running is never counted.</p>
+ <div class="card" id="pwHelp" style="display:none;border-color:#f8514980"><h3>What helps</h3><ul style="margin:0;padding-left:20px;line-height:1.7">
+  <li>Use the power adapter that came with the SuperStation, or a single-port USB-C PD adapter rated 9 V / 3 A or more.</li>
+  <li>Don't share a multi-port charger with other devices: they take power away under load.</li>
+  <li>Plug it straight into the wall or a good power strip, not into a TV's or monitor's USB port.</li>
+  <li>A worn cable can drop power too: try another one.</li></ul></div>
+ <div class="card"><h3>Power watch on the SuperStation</h3>
+  <div class="kv"><span>Status</span><span id="pwState">-</span></div>
+  <div class="kv"><span>What it does</span><span>checks at start-up, then looks for heavy work every 10 seconds at the lowest priority, and sleeps while a game or core runs</span></div>
+  <div class="kv"><span>Counts as heavy work</span><span>Update All, MiSTer's downloader, Console Mode's updater, backups to the NVMe drive (including the nightly one), SD card backups to a PC, file system checks</span></div>
+  <div class="kv"><span>Files</span><span class="muted">/media/fat/Scripts/.ss1tool/power/ (started from linux/user-startup.sh)</span></div>
+  <div class="row" style="margin-top:10px"><button class="b p" id="pwInstall" style="display:none" onclick="pwInstall(this)">Install power watch</button><button class="b d" id="pwRemove" style="display:none" onclick="pwRemove(this)">Remove power watch</button><span class="muted" id="pwNote"></span></div></div>
+ <div class="card"><h3>Power lost during heavy work</h3>
+  <div class="row" style="justify-content:space-between"><div><div id="pwCount" style="font-size:28px;font-weight:600">0</div><div class="tally" id="pwTally"></div></div><button class="b" id="pwAck" onclick="pwAck(this)">Start the count again (fixed it)</button></div>
+  <table style="margin-top:8px"><thead><tr><th>When</th><th>Interrupted</th><th>Seen</th></tr></thead><tbody id="pwList"></tbody></table>
+  <p class="muted" style="margin:10px 0 0" id="pwFile"></p></div>
 </div>
 <div class="subpage" id="bioscheck">
  <h2>BIOS and game folders</h2><p class="sub">Checks the BIOS files each system needs and the games folders MiSTer actually uses, with the same databases Update All uses (ajgowans' BIOS Database and the MiSTer distribution). SS1 Tool only checks; Update All's <b>BIOS Database</b> option can install missing BIOS files.</p>
@@ -1014,7 +1055,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
  <div class="card about">
   
   <h2 style="font-size:28px;margin:0">SS1 Tool</h2>
-  <p class="muted" style="margin:2px 0 16px">Version 1.28.21</p>
+  <p class="muted" style="margin:2px 0 16px">Version 1.29.0</p>
   <p style="font-size:16px;margin:0 0 6px">Developed by <b>f3bandit</b></p>
   <p style="margin:0 0 18px">Unofficial Super Station One Tools</p>
   <p style="margin:0 0 18px">Special thanks to Taki Udon and all the admins on the Taki Discord.</p>
@@ -1058,7 +1099,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
   <p style="margin-bottom:0">As Android moves on, a future update may raise the minimum version. Android versions below the new minimum won't be supported from then on: the version of SS1 Tool you have keeps working, but it won't get updates or fixes for them. A change to the minimum is listed in the release notes.</p>
   <p class="muted" id="supportThis" style="margin-bottom:0"></p></div>
  <div class="card android-only" id="devCard"><h3>This device</h3><p class="muted" style="margin-top:0">SS1 Tool adjusts its layout to your screen, text size and accessibility settings. If something doesn't fit, include this when you report it.</p><div id="devInfo" class="muted">-</div></div>
- <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.28.21. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
+ <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.29.0. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
   <p id="licInfo" class="muted"></p>
   <div class="row" style="margin-bottom:10px"><button class="b" onclick="demoNav('ss1app://update/check')">Check for updates</button><button class="b" onclick="demoNav('ss1app://eula/view')">License Agreement</button><a class="b" href="https://ss1-tools.github.io/legal/privacy.html" target="_blank" rel="noopener">Privacy policy</a></div>
   <details><summary>Open-source licenses</summary><p class="muted" style="margin-top:8px">SS1 Tool for Android includes the Go programming language's standard library and the Go projects golang.org/x/crypto, golang.org/x/sys and golang.org/x/image, under this license:</p>
@@ -1118,7 +1159,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre></deta
  <div class="row" style="justify-content:flex-end"><button class="b" onclick="closeModal()">Close</button><button class="b p" id="mBtn" onclick="reconnect()">Reconnect</button></div>
 </div></div>
 <div id="toast"></div>
-<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.28.21</span></div></div>
+<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.29.0</span></div></div>
 <script>
 // Recent app errors, kept for the app problem report (addresses and other identifying details removed).
 const APPLOG=[];
@@ -1151,6 +1192,14 @@ const CECNOTE=`<div class="vinfo"><b>Messages about hdmi_cec, hdmi_off, video_of
 const TOKEN="demo";
 const $=id=>document.getElementById(id);
 let lastReport="";
+// anything that starts Console Mode again: when its update hasn't confirmed itself and SS1 Tool
+// couldn't confirm it, the server asks first; "restart anyway" sends it again with force
+async function apiCM(url,body){
+  const j=await api(url,body);
+  if(j.ask!=="cm_update")return j;
+  if(!confirm(j.message))throw new Error("Not restarted: Console Mode's update is still waiting to confirm itself.");
+  return api(url,Object.assign({},body,{force:true}));
+}
 async function api(url,body,method){
   const opt={method:method||(body!==undefined?"POST":"GET"),headers:{"X-Token":TOKEN}};
   if(body!==undefined){opt.headers["Content-Type"]="application/json";opt.body=JSON.stringify(body)}
@@ -1196,7 +1245,7 @@ async function loadSetupStatus(){mcSetupStatus();ptCoreStatus();psxLoad();const 
 // Pages and the parts inside merged pages. A part loads the first time it scrolls into view
 // after its page opens, so a page like Files doesn't load everything at once.
 const PAGELOAD={dash:dashLoad,video:vLoad,setup:()=>{loadCommunity();loadScraper();loadSetupStatus();loadAdvisory();raLoad()},wizard:wzOpen};
-const SUBLOAD={stSync:()=>{syncLoad();syncDrives()},fm:filesInit,nvmebk:()=>{nbLoad();nbPoll();ntLoad()},saves:()=>{svLoad();svPoll();liveWatch("saves",svLoad)},sdbackup:()=>{sdBackupList();pollSDBackup()},shots:()=>{shotsPC();shotsSS1();liveWatch("shots",shotsSS1)},art:artLoad,mcards:mcLoad,
+const SUBLOAD={stSync:()=>{syncLoad();syncDrives()},fm:filesInit,nvmebk:()=>{nbLoad();nbPoll();ntLoad()},saves:()=>{svLoad();svPoll();liveWatch("saves",svLoad)},sdbackup:()=>{sdBackupList();pollSDBackup()},sysbk:()=>sysLoad(true),power:()=>pwLoad(true),shots:()=>{shotsPC();shotsSS1();liveWatch("shots",shotsSS1)},art:artLoad,mcards:mcLoad,
  sddiag:loadTargets,padtest:ptInit,padsnac:ptInit,bioscheck:biosLoad,usb:usbLoad,bt:()=>{btLoad();btPoll()},ctrl:ctrlLoad,eth:ethLoad,settings:()=>{loadIniList()},cifs:()=>{cfLoad();cfPoll();pcLoad()},wifi:()=>{wlLoad();wifiInfo();wifiRemoteState()},
  flash:()=>{pollRestorePoint();checkAdmin();loadDisks();pollFlash();if(!IMGS.length)loadImages()}};
 let subObs=null;
@@ -1250,11 +1299,11 @@ async function init(){const c=await api("/api/config");$("host").value=c.host||"
 function setConn(on){$("conn").innerHTML=on?"Connected to <b>"+$("host").value+"</b>":"Not connected";$("statusCard").style.display=on?"block":"none"}
 function doConnect(){busy(event.target,async()=>{const s=await api("/api/connect",{host:$("host").value,user:$("user").value,pass:$("pass").value});connectedHost=$("host").value;setConn(true);showStatus(s);toast("Connected");loadDevices()})}
 async function doDisconnect(){await api("/api/disconnect",{});connectedHost="";setConn(false);loadDevices()}
-async function loadStatus(quiet){try{if(!ADV)await loadAdvisory();showStatus(await api("/api/status"))}catch(e){if(!quiet)toast(e.message,true)}}
+async function loadStatus(quiet){try{if(!ADV)await loadAdvisory();showStatus(await api("/api/status"));pwBanner();setTimeout(pwBanner,6000)}catch(e){if(!quiet)toast(e.message,true)}}
 let LASTSTATUS=null,WARNEDGEN4="";
 const DRIVE_HIGH_W=7; // drives rated above this can overload the SS1 dock
 // GitHub issue form for a drive that isn't in the drive list (filled in with what the drive reported)
-function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.28.21"+(ANDROID?" (Android)":"")});
+function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.29.0"+(ANDROID?" (Android)":"")});
  return "https://github.com/f3bandit/ss1_tool/issues/new?"+u.toString()}
 function showStatus(s){LASTSTATUS=s;
   const yes=v=>v==="1"?'<span class="pill good">installed</span>':'<span class="pill warn">not installed</span>';
@@ -1309,7 +1358,7 @@ async function loadScraper(){const ok=t=>`<span class="pill good">&#10003; ${t}<
   $("scraperNow").innerHTML=(j.cm_installed?"":'<span class="pill bad">Console Mode not found on this SuperStation. </span>')+(j.has_devid?"Developer ID: present in screenscraper.txt. ":"")+"Leave a field blank to keep the installed value."}
  catch(e){for(const id of ["stSSID","stSSPW","stTGDB"])$(id).textContent="";$("scraperNow").textContent=e.message}}
 function saveScraper(){busy(event.target,async()=>{const j=await api("/api/scraper",{ssid:$("ssid").value,sspassword:$("sspw").value,tgdb:$("tgdb").value});$("sspw").value="";toast(j.message);loadScraper()})}
-function remote(a){if(a!=="menu"&&!confirm(a==="reboot"?"Reboot the SuperStation?":"Safely shut down the SuperStation?"))return;busy(event.target,async()=>{const j=await api("/api/remote",{action:a});toast(j.message);if(a!=="menu"){EXPECT={kind:a};setTimeout(onLost,a==="shutdown"?3500:2500)}})}
+function remote(a){if(a!=="menu"&&!confirm(a==="reboot"?"Reboot the SuperStation?":"Safely shut down the SuperStation?"))return;busy(event.target,async()=>{const j=await apiCM("/api/remote",{action:a});toast(j.message);if(a!=="menu"){EXPECT={kind:a};setTimeout(onLost,a==="shutdown"?3500:2500)}})}
 let termAt=0;
 function term(w){if(document.activeElement)document.activeElement.blur();if(Date.now()-termAt<4000)return;termAt=Date.now();
  busy(null,async()=>{const j=await api("/api/terminal",{which:w});toast(j.message+" Click inside the terminal window before typing the password.")})}
@@ -1988,14 +2037,14 @@ function artRender(){if(!ART)return;const S=ART.systems||[];if(!ART_OPEN&&S.leng
  $("artPending").textContent=ART.pending?`${ART.pending} picture${ART.pending==1?"":"s"} ready to copy`:(ART.scanned?"Nothing new to copy":"");}
 async function artStart(){const sys=[...document.querySelectorAll(".artSys:checked")].map(c=>c.value);if(!sys.length)return toast("Tick at least one system",true);
  try{await api("/api/art/start",{source:$("artSource").value,media:$("artMedia").value,systems:sys,missing_only:$("artMissing").checked});artPoll()}catch(e){toast(e.message,true)}}
-function artReloadCM(btn){busy(btn,async()=>{await api("/api/remote",{action:"menu"});toast("Console Mode is reloading - new art shows when it's back")})}
+function artReloadCM(btn){busy(btn,async()=>{await apiCM("/api/remote",{action:"menu"});toast("Console Mode is reloading - new art shows when it's back")})}
 async function artCancel(b){b.disabled=true;b.textContent="Stopping...";try{await api('/api/art/cancel',{})}catch(e){toast(e.message,true)}}
 async function artInstall(){try{await api("/api/art/install",{});artPoll()}catch(e){toast(e.message,true)}}
 async function artPoll(){if(artPolling)return;artPolling=true;try{for(;;){const j=await api("/api/art/progress");if(!j.id)break;
   $("artBarWrap").style.display="block";$("artOut").style.display="block";$("artStop").style.display=j.running?"":"none";if(!j.running){$("artStop").disabled=false;$("artStop").textContent="Stop"}$("artGo").disabled=$("artInstBtn").disabled=j.running;
   const pct=j.total?Math.floor(100*j.done/j.total):(j.total_bytes?Math.floor(100*j.bytes/j.total_bytes):0);$("artBarWrap").classList.toggle("ind",j.running&&!pct);$("artBar").style.width=(j.running?pct:100)+"%";
   $("artOut").textContent=j.running?`${j.title}\n${j.msg}...`+(j.total?` ${j.done} of ${j.total}`:"")+(j.total_bytes?` ${fmtB(j.bytes)} of ${fmtB(j.total_bytes)}`:""):(j.error?"Stopped: "+j.error:j.result);
-  if(!j.running){if(/^Install/.test(j.title)&&!j.error&&/^Copied/.test(j.result||"")&&$("artReloadAfter").checked){try{await api("/api/remote",{action:"menu"});$("artOut").textContent+="\nConsole Mode reloaded: the new art shows when it's back."}catch(e){$("artOut").textContent+="\nCouldn't reload Console Mode ("+e.message+"): use Reload Console Mode."}}
+  if(!j.running){if(/^Install/.test(j.title)&&!j.error&&/^Copied/.test(j.result||"")&&$("artReloadAfter").checked){try{await apiCM("/api/remote",{action:"menu"});$("artOut").textContent+="\nConsole Mode reloaded: the new art shows when it's back."}catch(e){$("artOut").textContent+="\nCouldn't reload Console Mode ("+e.message+"): use Reload Console Mode."}}
    await artLoad();if(!ART_OPEN&&/^Scrape/.test(j.title)){const t=[...document.querySelectorAll(".artSys:checked")].map(c=>c.value),S=(ART.systems||[]).filter(s=>t.includes(s.key)&&s.games>s.with_box).sort((a,b)=>(b.games-b.with_box)-(a.games-a.with_box));if(S[0])ART_OPEN=S[0].key}
    if(ART_OPEN){artResults(ART_OPEN);if(/^Scrape/.test(j.title))setTimeout(()=>jumpTo("artResultsCard"),300)}break}await new Promise(r=>setTimeout(r,800))}}catch(e){}artPolling=false}
 let ART_OPEN="";
@@ -2005,9 +2054,13 @@ async function artResults(key){ART_OPEN=key;let j;try{j=await api("/api/art/resu
   `<table><thead><tr><th>Game</th><th>Box art</th><th>Background</th><th>Search under another name</th></tr></thead><tbody>`+
   G.filter(g=>!($("artOnlyMiss")?$("artOnlyMiss").checked:miss.length)||(!g.has_box&&!g.box)).map((g,i)=>{const id="artq"+i;
    const st=(has,src)=>src?`<span class="pill good">${esc(src)}</span>`:has?'<span class="pill good">on SS1</span>':'<span class="pill muted">none</span>';
-   return `<tr><td>${esc(g.title)}${g.folder?' <span class="pill muted">folder</span>':""}${g.miss?`<div class="muted" style="font-size:12px">${esc(g.miss)}</div>`:""}${g.match&&g.box?`<div class="muted" style="font-size:12px">found as ${esc(g.match)}</div>`:""}</td><td>${st(g.has_box,g.box)}</td><td>${st(g.has_bg,g.bg)}</td>
+   return `<tr><td>${esc(g.title)}${g.folder?' <span class="pill muted">folder</span>':""}${g.miss?`<div class="muted" style="font-size:12px">${esc(g.miss)}</div>`:""}${g.match&&g.box?`<div class="muted" style="font-size:12px">found as ${esc(g.match)}</div>`:""}${g.found?" "+artFoundPill(g.found):""}</td><td>${st(g.has_box,g.box)}</td><td>${st(g.has_bg,g.bg)}</td>
    <td><div class="row" style="gap:6px;flex-wrap:nowrap"><input id="${id}" size="22" value="${esc(g.manual||"")}" placeholder="e.g. original game name"><button class="b sm" onclick="artSearch('${esc(key)}',${JSON.stringify(g.title).replace(/"/g,"&quot;")},'${id}')">Search</button></div>
    <div class="row" style="gap:6px;margin-top:4px"><span class="muted" style="font-size:12px">or upload:</span><button class="b sm" onclick="artUploadPick('${esc(key)}',${JSON.stringify(g.title).replace(/"/g,"&quot;")},'box')">Box art</button><button class="b sm" onclick="artUploadPick('${esc(key)}',${JSON.stringify(g.title).replace(/"/g,"&quot;")},'bg')">Background</button></div><div id="${id}r"></div></td></tr>`}).join("")+"</tbody></table>"}
+// how a game was matched: by what's in its file (green), by its title (amber: worth a look), or the game it's based on (blue)
+function artFoundPill(f){const c=/^(checksum|disc code)/.test(f)?"good":f==="based on"?"info":f==="manual"?"muted":"warn";
+ const t={checksum:"Matched by its checksum, so it's the exact game","name":"Matched by its file name","similar name":"Matched by a similar name: worth a quick look","based on":"A hack or translation: shown with the art of the game it's based on","manual":"The name you searched for"}[f]||"Matched by the product code on the disc";
+ return `<span class="pill ${c}" style="font-size:11px" title="${esc(t)}">${esc(f)}</span>`}
 async function artSearch(key,title,id){const q=$(id).value.trim();if(!q)return toast("Type a name to search for",true);const box=$(id+"r");box.innerHTML='<span class="muted">Searching...</span>';
  try{const j=await api("/api/art/search",{system:key,query:q});const R=j.results||[];
   box.innerHTML=R.length?`<div class="artpick">`+R.slice(0,12).map(r=>`<button class="b sm" title="${esc(r.name)}" onclick="artApply('${esc(key)}',${JSON.stringify(title).replace(/"/g,"&quot;")},${JSON.stringify(r.name).replace(/"/g,"&quot;")},this)"><img src="${esc(r.url)}" loading="lazy" alt=""><span>${esc(r.name)}</span></button>`).join("")+"</div>":'<span class="muted">Nothing found - try fewer words</span>'}catch(e){box.innerHTML="";toast(e.message,true)}}
@@ -2101,7 +2154,7 @@ async function rsPoll(fresh){if(rsPolling)return;rsPolling=true;
    const L=$("rsJobLog");L.textContent=(j.log||[]).join("\n");L.scrollTop=L.scrollHeight;$("rsDone").style.display=!j.running&&!j.error?"flex":"none";$("rsBtn").disabled=!!j.running}
   if(!j.running)break;await new Promise(r=>setTimeout(r,400))}}catch(e){}
  rsPolling=false;sdBackupList()}
-async function restartSS1(){if(!confirm("Restart the SuperStation now?"))return;try{const j=await api("/api/remote",{action:"reboot"});toast(j.message)}catch(e){toast(e.message,true)}}
+async function restartSS1(){if(!confirm("Restart the SuperStation now?"))return;try{const j=await apiCM("/api/remote",{action:"reboot"});toast(j.message)}catch(e){toast(e.message,true)}}
 // ---------- "Why isn't my card listed?"
 async function diskReport(target){const box=$(target);if(!box)return;box.innerHTML='<p class="muted">Asking Windows for every disk...</p>';
  let d;try{d=await api("/api/flash/disks?all=1")}catch(e){box.innerHTML=`<p><span class="pill bad">${esc(e.message)}</span></p>`;return}
@@ -2281,7 +2334,7 @@ async function wzNext(){if(WZ.busy)return;WZ.busy=true;$("wzNext").disabled=true
 function wzBack(){if(W.step>0){W.step--;WZ.status=null;wzSave();wzRender()}}
 function wzSkip(){if(W.step===6){W.wifiDone="";W.wifiSsid=""}if(W.step===11)W.scraper="skipped";W.step++;WZ.status=null;wzSave();wzRender()}
 function wzReset(){W={step:0,disk:"",diskLabel:"",image:"consolemode",flashed:false,booted:false,path:"",ip:"",user:"root",drive:"",wifiSsid:"",wifiPass:"",wifiCountry:"",wifiDone:"",scripts:{ss1:true,reflex:false,psx:false},ua:"rec",samba:"",overlapDone:false,scraper:"",done:{}};WZ.status=null;wzSave();wzRender()}
-function wzRestart(){if(!confirm("Restart the SuperStation now?"))return;api("/api/remote",{action:"reboot"}).then(()=>{EXPECT={kind:W.wifiDone?"wifi":"reboot"};setTimeout(onLost,2500)}).catch(e=>toast(e.message,true))}
+function wzRestart(){if(!confirm("Restart the SuperStation now?"))return;apiCM("/api/remote",{action:"reboot"}).then(()=>{EXPECT={kind:W.wifiDone?"wifi":"reboot"};setTimeout(onLost,2500)}).catch(e=>toast(e.message,true))}
 // ---------- community scripts
 async function loadCommunity(){try{const l=await api("/api/community/status");
  $("commList").innerHTML=l.map(c=>`<tr><td><b>${esc(c.name)}</b><div class="muted">${esc(c.file)} &middot; by <a href="${esc(c.source)}" target="_blank" rel="noopener" style="color:#79c0ff">${esc(c.author)}</a></div></td>
@@ -2308,6 +2361,57 @@ async function pollSDBackup(){if(sbPolling)return;sbPolling=true;try{for(;;){con
   else if(j.running)$("sbOut").textContent=`Backing up "${j.name}"... ${pct}%\n${fmtB(j.done_bytes)} of about ${fmtB(j.total_bytes)} - ${j.files} files\nNow: ${j.current||""}`;
   else{$("sbOut").textContent=j.error?"Backup failed: "+j.error:j.canceled?"Backup cancelled. "+j.files+" files were copied to:\n"+j.path:`Backup complete: ${j.files} files, ${fmtB(j.done_bytes)}\nSaved to: ${j.path}`+(j.skipped?`\n${j.skipped} item(s) Windows can't store (links or file names it doesn't allow) weren't copied; they're listed in _backup_info.txt.`:"");sdBackupList();break}
   await new Promise(r=>setTimeout(r,800))}}catch(e){toast(e.message,true)}sbPolling=false}
+// ---------- MiSTer & Linux backups
+let SYS={versions:[]},sysPolling=false;
+async function sysLoad(probe){try{const j=await api("/api/sysbk/status"+(probe?"?probe=1":""));SYS=j;$("sysOn").checked=j.on;sysRender(j);if(j.state.running)sysPoll()}catch(e){}}
+function sysEnable(c){busy(c,async()=>{const j=await api("/api/sysbk/enable",{on:c.checked});toast(j.message);sysLoad(c.checked)})}
+function sysRender(j){$("sysDir").textContent="Folder: "+j.dir+" · "+j.versions.length+" version"+(j.versions.length===1?"":"s")+", "+fmtB(j.total||0);
+ const st=j.state,run=st.running;
+ $("sysCur").innerHTML=j.current&&j.current.length?j.current.map(c=>{let pill=c.State==="saved"?'<span class="pill good">Saved</span>':'<span class="pill warn">Not saved yet</span>';
+   if(run&&st.part===c.Name){const pct=st.total?Math.floor(100*st.done/st.total):0;pill=`<span class="pill info">Saving… ${pct}%</span>`}
+   return `<tr><td>${esc(c.Name)}</td><td>${esc(c.Version)}</td><td class="muted" style="font-size:12.5px">${esc(c.File)}</td><td>${pill}</td></tr>`}).join("")
+  :`<tr><td colspan="4" class="muted">${j.connected?"Reading the SuperStation…":"Connect to the SuperStation to see its versions."}</td></tr>`;
+ $("sysBarWrap").style.display=run&&st.total?"block":"none";if(run&&st.total)$("sysBar").style.width=Math.floor(100*st.done/st.total)+"%";
+ let m="";if(run)m=st.message+(st.total?` — ${fmtB(st.done)} of ${fmtB(st.total)}. You can keep using SS1 Tool and the SuperStation meanwhile.`:"…");
+ else{if(st.checked)m="Checked "+new Date(st.checked*1000).toLocaleTimeString()+"."+(st.saved&&st.saved.length?" New: "+st.saved.join(", ")+".":" Nothing new.");}
+ if(st.note)m+=(m?" ":"")+st.note;if(st.error)m+=(m?" ":"")+"⚠ "+st.error;$("sysMsg").textContent=m;
+ $("sysList").innerHTML=j.versions.length?j.versions.map(v=>`<tr><td><input type="checkbox" class="sysTick" data-part="${esc(v.Part)}" data-id="${esc(v.ID)}"></td><td>${esc(v.Name)}</td><td>${esc(v.Version)}</td><td>${new Date(v.FirstSeen*1000).toLocaleDateString()}</td><td>${fmtB(v.Size)}</td>
+   <td>${v.InUse?'<span class="pill good">In use</span>':""}${v.Partial?'<span class="pill info">Still arriving (Sync)</span>':""}</td><td style="text-align:right">${v.InUse||v.Partial||!j.connected?"":`<button class="b" onclick="sysPutBack('${esc(v.Part)}','${esc(v.ID)}')">Put back…</button>`}</td></tr>`).join("")
+  :'<tr><td colspan="7" class="muted">Nothing saved yet. Versions are saved the next time SS1 Tool connects.</td></tr>';
+ $("sysSetCard").style.display=j.settings&&j.settings.length?"block":"none";
+ if(j.settings)$("sysSets").innerHTML=j.settings.map(s=>`<div class="kv"><span>${esc(s.Name)}</span><span>${s.Status==="reset"?`<span class="pill warn">Reset by the Linux ${esc(s.Since)} update</span> <button class="b" style="padding:3px 10px" onclick="sysSetBack('${esc(s.Path)}',this)">Put mine back</button>`:s.Status==="unchanged"?'<span class="pill good">Unchanged</span>':s.Status==="changed"?'<span class="pill muted">Changed</span>':`<span class="pill muted">${esc(s.Status)}</span>`}</span></div>`).join("")}
+async function sysPoll(){if(sysPolling)return;sysPolling=true;try{for(;;){await new Promise(r=>setTimeout(r,900));const j=await api("/api/sysbk/status");SYS=j;sysRender(j);if(!j.state.running){sysLoad(true);break}}}catch(e){}sysPolling=false}
+function sysCheckNow(b){if(!connectedHost)return toast("Connect to the SuperStation first",true);busy(b,async()=>{await api("/api/sysbk/check",{});setTimeout(()=>{sysLoad(false);sysPoll()},400)})}
+function sysDelete(b){const items=[...document.querySelectorAll(".sysTick:checked")].map(c=>({Part:c.dataset.part,ID:c.dataset.id}));if(!items.length)return toast("Tick the versions to delete first",true);
+ if(!confirm(`Delete ${items.length} saved version(s) from this PC? They can't be put back on the SuperStation after this.`))return;busy(b,async()=>{const j=await api("/api/sysbk/delete",{items});toast(j.message);$("sysAll").checked=false;sysLoad(false)})}
+function sysPutBack(part,id){const v=SYS.versions.find(x=>x.Part===part&&x.ID===id),cur=SYS.versions.find(x=>x.Part===part&&x.InUse);if(!v)return;
+ $("sysDlgT").textContent=`Put back ${v.Name} ${v.Version}?`;
+ $("sysDlgB").innerHTML=`<p>The SuperStation goes back to the ${esc(v.Name)} it had on ${new Date(v.FirstSeen*1000).toLocaleDateString()}. Your games, saves and settings aren't touched.</p>
+  <div class="kv"><span>Now on the SuperStation</span><span>${cur?esc(cur.Version)+' <span class="pill good">already saved on this PC</span>':'<span class="pill warn">not saved yet</span>'}</span></div>
+  <div class="kv"><span>Going back to</span><span>${esc(v.Version)} (${fmtB(v.Size)})</span></div>
+  <div class="kv"><span>What happens</span><span>copy, check, swap, restart</span></div>`;
+ $("sysDlgGo").onclick=()=>busy($("sysDlgGo"),async()=>{const j=await apiCM("/api/sysbk/restore",{part,id});$("sysDlg").style.display="none";toast(j.message)});
+ $("sysDlg").style.display="flex"}
+function sysSetBack(path,b){if(!confirm("Put your copy of "+path+" back, as it was before the Linux update?"))return;busy(b,async()=>{const j=await api("/api/sysbk/setting-restore",{path});toast(j.message);sysLoad(true)})}
+// ---------- power watch
+const pwWhen=t=>t?new Date(t*1000).toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}):"unknown time";
+async function pwBanner(){try{const j=await api("/api/power/status");const e=j.events&&j.events[0];
+ $("pwrBanner").style.display=j.warn?"flex":"none";if(j.warn)$("pwrBannerText").textContent=`The SuperStation lost power in the middle of heavy work ${j.count} times${e?" (latest: "+e.what+", "+pwWhen(e.at)+")":""}. That's usually a power adapter that can't keep up.`}catch(e){}}
+async function pwLoad(probe){try{const j=await api("/api/power/status"+(probe?"?probe=1":""));
+ if(!j.connected)$("pwState").innerHTML='<span class="pill muted">Connect to see</span>';
+ else if(j.installed)$("pwState").innerHTML=j.running?'<span class="pill good">Installed, running</span>':'<span class="pill warn">Installed, not running (it starts with the SuperStation)</span>';
+ else if(j.installed===false)$("pwState").innerHTML='<span class="pill muted">Not installed</span>';
+ $("pwInstall").style.display=j.connected&&j.installed===false?"":"none";$("pwRemove").style.display=j.connected&&j.installed?"":"none";
+ $("pwNote").textContent=j.installed?"Removes the script, its start-up line and its files. Nothing else is touched.":"One small script, started the same way as the CIFS scripts. Remove it any time.";
+ $("pwCount").innerHTML=`${j.count} <span class="muted" style="font-size:14px;font-weight:400">${j.count>=j.warn_at?"&middot; warning shown":"of "+j.warn_at+" before a warning"}</span>`;$("pwCount").style.color=j.count>=j.warn_at?"var(--warn)":"";
+ $("pwTally").innerHTML=Array.from({length:j.warn_at},(_,i)=>`<i class="${i<j.count?"on":""}"></i>`).join("");
+ $("pwHelp").style.display=j.warn?"block":"none";$("pwAck").style.display=j.count?"":"none";
+ $("pwList").innerHTML=j.events&&j.events.length?j.events.map(e=>`<tr><td>${esc(pwWhen(e.at))}</td><td>${esc(e.what)}</td><td class="muted">read when SS1 Tool connected ${esc(pwWhen(e.seen))}</td></tr>`).join(""):'<tr><td colspan="3" class="muted">None since the count was last started.</td></tr>';
+ $("pwFile").textContent=`The SuperStation keeps the events in a small file on its SD card; SS1 Tool copies each one into its own record on this PC (${j.file}), so nothing is lost if the card is reflashed.`+(j.all>j.count?` ${j.all-j.count} earlier event(s) are in the record from before the count was started again.`:"");
+ pwBanner()}catch(e){}}
+function pwInstall(b){busy(b,async()=>{const j=await api("/api/power/install",{});toast(j.message);pwLoad(true)})}
+function pwRemove(b){if(!confirm("Remove the power watch from the SuperStation? The events it found so far stay in SS1 Tool's record on this PC."))return;busy(b,async()=>{const j=await api("/api/power/remove",{});toast(j.message);pwLoad(true)})}
+function pwAck(b){if(!confirm("Start the count again? Do this once you've changed the power adapter or cable."))return;busy(b,async()=>{const j=await api("/api/power/ack",{});toast(j.message);pwLoad(false)})}
 // ---------- dashboard
 const DH={temp:[],cpu:[],rx:[],tx:[]};let dashTimer=null,dashBusy=false;
 function spark(id,data,max,color){const c=$(id),r=c.getBoundingClientRect(),dpr=devicePixelRatio||1;c.width=r.width*dpr;c.height=r.height*dpr;const x=c.getContext("2d");x.scale(dpr,dpr);
@@ -2380,7 +2484,7 @@ function wifiSave(where){const body={ssid:$("wSsid").value,pass:$("wPass").value
  if(where==="card"&&!body.drive)return toast("Insert the SD card and click Refresh",true);
  busy(event.target,async()=>{const j=await api(where==="card"?"/api/wifi/save-card":"/api/wifi/save-remote",body);$("wOut").style.display="block";$("wOut").textContent=j.message;toast(where==="card"?"Saved to the SD card":"Sent to the SuperStation");if(where!=="card")wifiRemoteState()})}
 function wifiRestart(){if(!connectedHost)return toast("Connect to the SuperStation first",true);if(!confirm("Restart the SuperStation now so it joins WiFi?"))return;
- busy(event.target,async()=>{await api("/api/remote",{action:"reboot"});EXPECT={kind:"wifi"};setTimeout(onLost,2500)})}
+ busy(event.target,async()=>{await apiCM("/api/remote",{action:"reboot"});EXPECT={kind:"wifi"};setTimeout(onLost,2500)})}
 // ---------- connection watch: tell the user when the SS1 goes away
 let EXPECT=null,pingBusy=false;
 function showModal(title,text,canReconnect){$("mTitle").textContent=title;$("mText").textContent=text;$("mErr").textContent="";$("mBtn").style.display=canReconnect?"":"none";$("modal").style.display="flex"}
@@ -2646,7 +2750,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("## SS1 Tool for Android: app problem report","");
   add("Where",where);add("Problem",types.join(", ")||"not given");
   L.push("","### What happened","",maskText($("repText").value.trim(),privWords())||"(not described)","","### App");
-  add("SS1 Tool",(d.app_version||"1.28.21")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
+  add("SS1 Tool",(d.app_version||"1.29.0")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
   L.push("","### Device");
   add("Model",d.model);add("Android",d.android?`${d.android} (API ${d.sdk})`:"");add("Type",d.form&&`${d.form}, ${d.orientation}`);
   add("Screen",d.px&&`${d.px} px, ${d.dp} dp, ${d.dpi} dpi`);add("Page size",`${document.documentElement.clientWidth}x${innerHeight} CSS px at ${devicePixelRatio}x`);
@@ -2668,7 +2772,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("","---","_No personal data: no IP or MAC addresses, network names, passwords, accounts, device IDs or location._");
   REPORT=L.join("\n");
   const bs=getComputedStyle(document.body);
-  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.28.21",store:d.store||"",made:new Date().toISOString(),where,types,
+  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.29.0",store:d.store||"",made:new Date().toISOString(),where,types,
    viewport:{w:document.documentElement.clientWidth,h:innerHeight,dpr:devicePixelRatio},font:{body:bs.fontSize,family:bs.fontFamily},
    device:{model:d.model,android:d.android,sdk:d.sdk,form:d.form,orientation:d.orientation,px:d.px,dp:d.dp,dpi:d.dpi,display_size:d.display_size,font_scale:d.font_scale,text_zoom:d.text_zoom,bold_text:d.bold_text,high_contrast_text:d.high_contrast_text,magnification:d.magnification,webview:d.webview,navigation:d.navigation,multi_window:d.multi_window},
    autoFixed:window.AFIXED||[],log:APPLOG,pages:REPSNAP?REPSNAP.pages:[]});

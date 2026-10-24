@@ -2304,8 +2304,8 @@ window.DEMO_DATA={
 "image": ""
 },
 "update": {
-"current": "1.28.21",
-"latest": "1.28.21",
+"current": "1.29.0",
+"latest": "1.29.0",
 "available": false,
 "checked": 1792103732,
 "notes": "\r\n<img width=\"256\" height=\"256\" alt=\"icon_256\" src=\"https://github.com/user-attachments/assets/2ad8cd92-2818-4a1e-90df-fe8777ca5987\" />\r\n\r\n\r\nSS1 Tool 1.28.14\r\n## New\r\n- NVMe health: reads the drive's own health log through the SS1 dock (temperature, percentage of rated life used, spare blocks, media errors, unsafe shutdowns, power-on hours, data written). Read-only. Temperature, wear and health also show in System status.\r\n- Back up the SD card to the NVMe drive: the SuperStation copies everything except the games folder to SS1_backup/sdcard on the drive. No PC needed while it runs, and later backups only copy what changed.\r\n- Nightly saves backup: saves and save states are copied to the NVMe/USB drive every night at the hour you pick, one copy per weekday (7 days kept). Runs on the SuperStation itself and keeps working after a restart. Turning it off removes everything it added.\r\n- SD backups now include the system areas: both the PC backup and the NVMe backup save the card's partition table, boot sector and MiSTer bootloader partition, with a README on restoring them.\r\n- WiFi connection quality: signal (Good / Fair / Weak), band, channel and link speed, as the SuperStation sees them.\r\n- Nearby WiFi networks the SuperStation can hear, strongest first, to help pick a less crowded channel.\r\n- Ethernet port and router speed: the fastest speed the SS1's port supports and the fastest the router offers, so a slow link can be traced to the cable, router or port.\r\n- Read speed test for the SD card and drives, with what the result means (the SS1's USB 2.0 tops out around 30-40 MB/s).\r\n- Dashboard: live read/write activity for the SD card and each drive, plus a list of the board's I2C buses.\r\n- Live updates: new screenshots and saves appear in their lists by themselves.\r\n\r\n## Fixed\r\n- The read speed test showed a cut-off drive name on some drives.",
@@ -2331,7 +2331,7 @@ window.DEMO_DATA={
 "connected": false,
 "host": "192.168.1.50",
 "user": "root",
-"version": "1.28.21"
+"version": "1.29.0"
 },
 "discover": {
 "devices": [
