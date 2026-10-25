@@ -257,7 +257,7 @@ D["flash/images"] = [
     {"kind": "regular", "label": "Regular", "name": "SuperStation_Regular.zip", "tag": "latest", "release": "Latest release", "url": "", "size": 1181116006, "published": "2026-10-01"}]
 D["flash/progress"] = {"running": False, "phase": "", "done": 0, "total": 0, "message": "", "error": "", "image": ""}
 D["padtest/state"] = {"connected": True, "error": "", "starting": False}
-D["update"].update({"current": "{{VERSION}}", "latest": "{{VERSION}}", "available": False, "mode": "notify", "can_write": True, "busy": "", "downloaded": False})
+D["update"].update({"current": "{{VERSION}}", "latest": "{{VERSION}}", "page": "https://github.com/f3bandit/ss1_tool/releases/tag/{{VERSION}}", "available": False, "mode": "notify", "can_write": True, "busy": "", "downloaded": False})
 D["setup-status"].update({"samba": "enabled", "smbd": True, "update_all": "2026.10.02",
     "scripts": {k: "current" for k in D["setup-status"]["scripts"]}})
 # MiSTer settings files: the real text from the stand-in card
