@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SS1 Tools FAQ</title>
+<meta name="description" content="Answers to common SuperStation One problems, video and DIP switch settings, and how SS1 Tool for Windows and Android work.">
+<meta name="theme-color" content="#171a21">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+ <a class="brand" href="index.html"><img src="assets/img/icon.png" alt="">SS1 <span>Tools</span></a>
+ <nav aria-label="Site"><a href="index.html">Home</a><a href="windows.html">Windows</a><a href="android.html">Android</a><a href="demo.html">Try it</a><a href="faq.html" aria-current="page">FAQ</a><a href="support.html">Support</a><a href="legal/eula.html">License</a><a href="legal/privacy.html">Privacy</a></nav>
+</div></header>
+<main class="wrap">
+<section class="hero">
+ <h1>FAQ</h1>
+ <p class="lead">Common SuperStation One problems and their fixes, the video settings and DIP switches, and what SS1 Tool does and why.</p>
+ <p class="faqnav"><a href="#ss1">SuperStation problems</a><a href="#video">Video and DIP switches</a><a href="#tool">How SS1 Tool works</a><a href="#help">Getting help</a></p>
+</section>
+
+<h2 id="ss1">SuperStation problems</h2>
+<div class="faq">
+<details><summary>My SD card got wrecked after running a "fix overlap" tool</summary>
+ <p>Some SS1 cards came with <code>fix_sd_overlap.sh</code> / <code>exfat_fix_overlap</code>. It misreads the SS1's correct partition layout as overlapping, and running it can destroy the card (<a href="https://github.com/Takiiiiiiii/SuperStation-Documentation/issues/14">SuperStation-Documentation #14</a>). Delete it: SS1 Tool's <b>Setup</b> page finds and removes it. If a card is already damaged, reflash it with the latest SuperStation installer, which has the fixed layout.</p>
+</details>
+<details><summary>Console Mode, CRT output, WiFi or the ARM cores stopped working after an update</summary>
+ <p>The September 7, 2026 MiSTer Linux update (kernel 5.15 to 6.18) broke Console Mode, CRT modes, WiFi and the ARM cores (3S-ARM, Duke3D, Quake) on the SS1. It has since been fixed. To stop Update All from replacing Linux without asking, set <code>update_linux = false</code> in <code>downloader.ini</code>. SS1 Tool's <b>Setup › Update All</b> sets this for you, and the status panel warns when a Linux update is waiting.</p>
+</details>
+<details><summary>Update All crashes when I use the "Link" (chip-id) option</summary>
+ <p>That option crashes on the SS1. Leave it off.</p>
+</details>
+<details><summary>I see RTC errors when the SS1 starts</summary>
+ <p>Run Update All. That fixes the RTC probe errors.</p>
+</details>
+<details><summary>My SS1 reboots by itself, or has file system errors, with an NVMe drive</summary>
+ <p>Gen 4 NVMe drives cause this. Use a Gen 3 drive.</p>
+</details>
+<details><summary>Which power adapter should I use?</summary>
+ <p>A single-port USB-C PD adapter that gives 9 V at 3 A. The Steam Deck adapter works. Don't share a multi-port charger with other devices, and don't use a Nintendo Switch 1 adapter.</p>
+</details>
+<details><summary>I get no picture over HDMI from the dock</summary>
+ <p>Plug the HDMI cable into the SuperStation itself. The HDMI-shaped port on the dock is an expansion port, not video out.</p>
+</details>
+<details><summary>Windows asks to scan and fix my SD card</summary>
+ <p>The card was switched off without being marked clean (exFAT's "dirty" flag). Shut down safely before switching off: SS1 Tool's <b>Remote › Safe shutdown</b>, or the <code>shutdown.sh</code> script it installs in the Scripts menu.</p>
+</details>
+<details><summary>Can I turn off the dock's IR receiver?</summary>
+ <p>Yes. It shows up as a USB device called "TinyUSB pico_ir_keyboard". Over SSH, find its port with <code>grep -l pico_ir /sys/bus/usb/devices/*/product</code>, then write <code>0</code> to that device's <code>authorized</code> file to switch it off (<code>1</code> switches it back on). It comes back on at the next start unless you add the command to <code>/media/fat/linux/user-startup.sh</code>.</p>
+</details>
+<details><summary>A core says "Unsafe Options" (PlayStation) or "Game Disc Is Unsuitable" (Saturn)</summary>
+ <p>Reset that core's settings to their defaults in its OSD menu.</p>
+</details>
+<details><summary>Update All warns about deprecated ini settings</summary>
+ <p>Replace your ini files with the updated ones in Taki Udon's <a href="https://github.com/Takiiiiiiii/SuperStation-Documentation/tree/main/INI_Files">SuperStation-Documentation INI_Files</a>. SS1 Tool backs up the old ones first if you do it from <b>Setup › MiSTer settings</b>.</p>
+</details>
+<details><summary>Console Mode icons show dark grey where they should be black</summary>
+ <p>Image editors often save PNGs with a colour palette plus gamma, sRGB or transparency information, and Console Mode mishandles those. Save your icons as plain truecolor (24-bit) PNGs without colour profile or transparency information.</p>
+</details>
+<details><summary>Search and Favorites broke in a Console Mode nightly</summary>
+ <p>Console Mode 1.1.3 nightly added a new setting (xySwap) that broke them. That's on Console Mode's side; 1.1.2 works.</p>
+</details>
+<details><summary>Duke3D, Quake and 3S-ARM don't show up in Console Mode</summary>
+ <p>They're missing from Console Mode's list of games it can launch (the _Other category). They still run from the MiSTer menu.</p>
+</details>
+</div>
+
+<h2 id="video">Video and DIP switches</h2>
+<div class="faq">
+<details><summary>Why does the SS1 have its own ini files? Did Taki change the video pinout?</summary>
+ <p>No pinout change. The SS1 has a Sony CXA video encoder and four DIP switches for its analog output. Taki's <code>MiSTer.ini</code> differs from stock MiSTer only in <code>vga_mode=subcarrier</code> and <code>video_info=2</code>. His other ini files (RGHV, RGsB, SVID, YPbP) are profiles for the other kinds of output.</p>
+</details>
+<details open><summary>Which DIP switches go with which video mode?</summary>
+ <p class="muted">For units made after December 2025. Region: Down = NTSC, Up = PAL. "–" means that switch doesn't matter for the mode.</p>
+ <div class="tablewrap"><table>
+  <thead><tr><th>Video mode</th><th>DIP 1</th><th>DIP 2</th><th>DIP 3</th><th>DIP 4</th></tr></thead>
+  <tbody>
+   <tr><td>S-Video / composite, Sony encoder (<code>subcarrier</code>)</td><td>Region</td><td>Region</td><td>Down</td><td>Up</td></tr>
+   <tr><td>S-Video / composite, FPGA (<code>svideo</code>, <code>cvbs</code>)</td><td>Region</td><td>Region</td><td>Up</td><td>Up</td></tr>
+   <tr><td>Component (YPbPr)</td><td>–</td><td>–</td><td>–</td><td>Down</td></tr>
+   <tr><td>RGB with separate sync (RGHV)</td><td>–</td><td>–</td><td>–</td><td>Up</td></tr>
+   <tr><td>RGB, sync on green (RGsB)</td><td>–</td><td>–</td><td>–</td><td>Down</td></tr>
+   <tr><td>Other RGB</td><td>–</td><td>–</td><td>–</td><td>Up for SCART, Down for sync on green</td></tr>
+  </tbody>
+ </table></div>
+ <p>What each switch does: 1 is the S-Video/composite region, 2 the FPGA luma trap, 3 picks the FPGA or the Sony encoder for S-Video/composite, and 4 is sync on green.</p>
+</details>
+<details><summary>My S-Video or composite picture is black and white</summary>
+ <p>Either <code>vga_mode=subcarrier</code> is set and the core has no subcarrier support, or the core is missing from <code>yc.txt</code>. Flip DIP 3 up and use the SVID profile.</p>
+</details>
+<details><summary>How do I set up a PAL CRT?</summary>
+ <p>Set <code>menu_pal=1</code> in <code>MiSTer.ini</code>, flip DIP 1 up, and set each core to PAL in its OSD menu.</p>
+</details>
+<details><summary>What does "Try it" in the video settings do?</summary>
+ <p>It applies a video setting for a short time. Press <b>Keep</b> to keep it; if you don't, the old setting comes back by itself, so a setting that leaves you with no picture fixes itself. Just wait. Your <code>MiSTer.ini</code> is backed up before every try. In SS1 Tool it's on the <b>Video</b> page, and the <b>Setup wizard</b> there tells you which DIP switches to set.</p>
+</details>
+</div>
+
+<h2 id="tool">How SS1 Tool works</h2>
+<div class="faq">
+<details><summary>What is SS1 Tool?</summary>
+ <p>An app for Windows and Android that connects to your SuperStation over your home network (default login <code>root</code> / <code>1</code>). It sets up a new card, edits the SS1's settings, moves files, backs things up, and runs diagnostics and debug reports.</p>
+</details>
+<details><summary>Will it install or update my cores?</summary>
+ <p>No. SS1 Tool never installs or updates cores by itself. Update All does that, when you run it.</p>
+</details>
+<details><summary>Is it safe to let SS1 Tool change my settings?</summary>
+ <p>Every fix takes a backup first, can be undone, and only runs when you press its button. The backups are kept on your PC or phone, one folder per ini file, with the date and time.</p>
+</details>
+<details><summary>What does the "SS1 HDMI fix" do?</summary>
+ <p>It comments out HDMI settings the SS1 doesn't support (HDMI-CEC, <code>hdmi_off</code>, <code>video_off_logo</code>). You can put them back any time.</p>
+</details>
+<details><summary>What are "MiSTer &amp; Linux backups"?</summary>
+ <p>SS1 Tool keeps every version of the SS1's system files (MiSTer, the menu core, Linux and Console Mode) so you can put an earlier one back (<b>Files › MiSTer &amp; Linux backups</b>). It's how you undo an update that broke something. Settings a Linux update can reset are listed separately, with the version from before.</p>
+</details>
+<details><summary>Console Mode went back to the old version after updating</summary>
+ <p>Console Mode keeps the old version until the new one has been confirmed running. Restarting, shutting down or reloading the menu before then puts the old one back. SS1 Tool confirms a waiting Console Mode update before it restarts, shuts down or reloads, and again when it connects.</p>
+</details>
+<details><summary>What is Power watch?</summary>
+ <p>A small watcher on the SuperStation (<b>Diag › Power</b>). It notices when the power was lost during heavy work (an update, a copy, a backup) and tells you, so you know which files to check.</p>
+</details>
+<details><summary>Why does Samba need turning on?</summary>
+ <p>It's off by default on MiSTer. <b>Setup › Samba file sharing</b> switches it on at every start, so the card shows up in Windows as <code>\\IP\sdcard</code>.</p>
+</details>
+<details><summary>Windows SmartScreen warns about SS1Tool.exe</summary>
+ <p>The exe isn't code-signed yet; signing is in progress. Choose <b>More info › Run anyway</b>.</p>
+</details>
+<details><summary>The SSH terminal won't open</summary>
+ <p>It uses Windows' own OpenSSH client. Add it in <b>Windows Settings › System › Optional features</b>.</p>
+</details>
+</div>
+
+<h2 id="help">Getting help</h2>
+<div class="faq">
+<details open><summary>Where do I report a problem?</summary>
+ <p>Problems with the SuperStation itself go to the Taki Udon Discord, with a debug report from <b>Diag › Debug report</b>. Problems with SS1 Tool go to GitHub issues. See <a href="support.html">Support</a>.</p>
+</details>
+</div>
+
+</main>
+<footer><div class="wrap">
+ <p class="kofi"><a href="https://ko-fi.com/W2V228VDIQ"><img src="assets/img/kofi.svg" alt="Support SS1 Tool on Ko-fi" width="223" height="30"></a></p>
+ <nav aria-label="Legal"><a href="legal/eula.html">License agreement (EULA)</a><a href="legal/privacy.html">Privacy policy</a><a href="legal/refunds.html">Refund policy</a><a href="support.html">Support</a><a href="https://github.com/f3bandit/ss1_tool">GitHub</a></nav>
+ <p>SS1 Tool and SS1 Tool for Android are independent, unofficial community tools made by f3bandit (F3 Digital Systems). They are not made, endorsed or supported by Taki Udon, Retro Remake or the MiSTer project. SuperStation One and all other product names are trademarks of their respective owners and are used only to describe compatibility.</p>
+ <p>&copy; 2026 f3bandit, trading as F3 Digital Systems. All rights reserved.</p>
+</div></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

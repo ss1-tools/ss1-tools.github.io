@@ -102,3 +102,15 @@ footer a{color:var(--dim)}
 @media (max-width:640px){.demotabs .btn{width:auto;flex:1}.demophone{border-width:8px;border-radius:30px}}
 
 .kofi{margin:0 0 14px}.kofi img{display:inline-block}
+
+/* FAQ */
+.faqnav{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:0 18px}
+.faq summary{cursor:pointer;font-weight:600;padding:14px 0;list-style-position:outside}
+.faq details[open] summary{border-bottom:1px solid var(--line);margin-bottom:12px}
+.faq details p{max-width:820px}
+.tablewrap{overflow-x:auto;margin:0 0 1em}
+.tablewrap table{border-collapse:collapse;width:100%;font-size:15px}
+.tablewrap th,.tablewrap td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tablewrap th{color:var(--dim);font-weight:600}
+.tablewrap table{min-width:560px}.tablewrap td:first-child{min-width:200px}.tablewrap code{white-space:nowrap}

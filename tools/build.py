@@ -5,7 +5,7 @@ import pathlib, re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 NAV = [("index.html", "Home"), ("windows.html", "Windows"), ("android.html", "Android"), ("demo.html", "Try it"),
-       ("support.html", "Support"), ("legal/eula.html", "License"), ("legal/privacy.html", "Privacy")]
+       ("faq.html", "FAQ"), ("support.html", "Support"), ("legal/eula.html", "License"), ("legal/privacy.html", "Privacy")]
 
 def page(src: pathlib.Path):
     text = src.read_text(encoding="utf-8")
