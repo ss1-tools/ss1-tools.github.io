@@ -3811,5 +3811,32 @@
 ]
 }
 ]
+},
+"sdrescue": {
+"ok": true,
+"drive": "7a06eb63-fd99-44b4-8189-8ebf36081250",
+"drive_present": true,
+"drive_mount": "/media/usb0",
+"drive_model": "NVMe drive",
+"image": "ok",
+"uboot": "ok",
+"armed": false,
+"sd_dirty_at_boot": true,
+"candidates": [
+{
+"path": "/media/usb0",
+"partuuid": "7a06eb63-fd99-44b4-8189-8ebf36081250",
+"model": "NVMe drive",
+"free_mb": 746838
+},
+{
+"path": "/media/usb1",
+"partuuid": "5c21e0d4-02",
+"model": "SanDisk Ultra Fit",
+"free_mb": 28410
+}
+],
+"last_result": "repaired",
+"last_at": "2026-10-28 21:14:03"
 }
 }
