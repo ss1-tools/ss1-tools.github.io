@@ -432,7 +432,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </style>
 </head>
 <body><div id="demoBar">Demo: nothing you press changes anything</div>
-<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.31.2</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
+<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.32.0</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
 <div id="aUpd" class="updbanner" style="display:none"></div>
 <div id="pwrBanner" class="updbanner" style="display:none;background:#f851491a;border-bottom-color:#f8514959"><span><b style="color:var(--bad)">Power supply problem?</b> <span id="pwrBannerText"></span></span><button class="b p" onclick="openPart('diag','power')">What helps</button><button class="b" onclick="$('pwrBanner').style.display='none'">Dismiss</button></div>
 <div id="updBanner" class="updbanner pc-only no-steam" style="display:none"><span id="updBannerText"></span><button class="b p" id="updBannerGo" onclick="updInstall()">Restart now</button><button class="b" id="updBannerNotes" style="display:none" onclick="updShowNotes()">What's new</button><button class="b" onclick="updSnooze()">Not now</button></div>
@@ -987,10 +987,14 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
   <div class="row" style="margin-top:10px">
    <button class="b" onclick="diag('fscheck')">Check file system</button>
    <button class="b d" onclick="diag('fsrepair')">Repair file system</button>
-   <span class="muted">NVMe and USB drives: the drive is unmounted while it's checked, so go back to the main menu first. The SD card is repaired on a PC.</span>
+   <span class="muted">NVMe and USB drives: the drive is unmounted while it's checked, so go back to the main menu first. The SD card is repaired offline (below) or on a PC.</span>
   </div>
   <p class="muted" style="margin:10px 0 0">Deep scans (read every file, surface read, write/verify) take a long time and run on the SuperStation itself: <a href="#" onclick="term('sd_integrity');return false" style="color:#79c0ff">open sd_integrity in a terminal</a>.</p>
   <pre class="out" id="diagOut">No test run yet.</pre></div>
+ <div class="card" id="srCard"><h3>Repair the SD card offline</h3>
+  <p class="muted" style="margin:0 0 10px">The SD card can't be repaired while the SuperStation runs from it. SS1 Tool puts a copy of the SuperStation's own MiSTer Linux on a USB or NVMe drive (exFAT, 1 GB free; about 400 MB in <code>ss1tool/rescue</code> on it, nothing else changes) and a few lines in the SD card's <code>linux/u-boot.txt</code> that do nothing until you ask. <b>Restart and repair</b> then starts that copy, which checks and repairs the SD card while nothing is using it, and starts the SuperStation again. Every other start-up stays exactly as it is.</p>
+  <div id="srBody"><p class="muted">Open this page while connected to see it.</p></div>
+  <pre class="out" id="srOut" style="display:none"></pre></div>
 </div>
 <div class="subpage" id="power">
  <h2>Power</h2><p class="sub">A power adapter that can't keep up resets the SuperStation instantly under load: no crash, no error, no log. The power watch catches it: heavy work that started and never finished, with no normal restart in between, means the power went. Switching off while nothing heavy is running is never counted.</p>
@@ -1061,7 +1065,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
  <div class="card about">
   
   <h2 style="font-size:28px;margin:0">SS1 Tool</h2>
-  <p class="muted" style="margin:2px 0 16px">Version 1.31.2</p>
+  <p class="muted" style="margin:2px 0 16px">Version 1.32.0</p>
   <p style="font-size:16px;margin:0 0 6px">Developed by <b>f3bandit</b></p>
   <p style="margin:0 0 18px">Unofficial Super Station One Tools</p>
   <p style="margin:0 0 18px">Special thanks to Taki Udon and all the admins on the Taki Discord.</p>
@@ -1105,7 +1109,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
   <p style="margin-bottom:0">As Android moves on, a future update may raise the minimum version. Android versions below the new minimum won't be supported from then on: the version of SS1 Tool you have keeps working, but it won't get updates or fixes for them. A change to the minimum is listed in the release notes.</p>
   <p class="muted" id="supportThis" style="margin-bottom:0"></p></div>
  <div class="card android-only" id="devCard"><h3>This device</h3><p class="muted" style="margin-top:0">SS1 Tool adjusts its layout to your screen, text size and accessibility settings. If something doesn't fit, include this when you report it.</p><div id="devInfo" class="muted">-</div></div>
- <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.31.2. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
+ <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.32.0. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
   <p id="licInfo" class="muted"></p>
   <div class="row" style="margin-bottom:10px"><button class="b" onclick="demoNav('ss1app://update/check')">Check for updates</button><button class="b" onclick="demoNav('ss1app://eula/view')">License Agreement</button><a class="b" href="https://ss1-tools.github.io/legal/privacy.html" target="_blank" rel="noopener">Privacy policy</a></div>
   <details><summary>Open-source licenses</summary><p class="muted" style="margin-top:8px">SS1 Tool for Android includes the Go programming language's standard library and the Go projects golang.org/x/crypto, golang.org/x/sys and golang.org/x/image, under this license:</p>
@@ -1165,7 +1169,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre></deta
  <div class="row" style="justify-content:flex-end"><button class="b" onclick="closeModal()">Close</button><button class="b p" id="mBtn" onclick="reconnect()">Reconnect</button></div>
 </div></div>
 <div id="toast"></div>
-<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.31.2</span></div></div>
+<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.32.0</span></div></div>
 <script>
 // Recent app errors, kept for the app problem report (addresses and other identifying details removed).
 const APPLOG=[];
@@ -1252,7 +1256,7 @@ async function loadSetupStatus(){mcSetupStatus();ptCoreStatus();psxLoad();const 
 // after its page opens, so a page like Files doesn't load everything at once.
 const PAGELOAD={dash:dashLoad,video:vLoad,setup:()=>{loadCommunity();loadScraper();loadSetupStatus();loadAdvisory();raLoad()},wizard:wzOpen};
 const SUBLOAD={stSync:()=>{syncLoad();syncDrives()},fm:filesInit,nvmebk:()=>{nbLoad();nbPoll();ntLoad()},saves:()=>{svLoad();svPoll();liveWatch("saves",svLoad)},sdbackup:()=>{sdBackupList();pollSDBackup()},sysbk:()=>sysLoad(true),power:()=>pwLoad(true),shots:()=>{shotsPC();shotsSS1();liveWatch("shots",shotsSS1)},art:artLoad,mcards:mcLoad,
- sddiag:loadTargets,padtest:ptInit,padsnac:ptInit,bioscheck:biosLoad,usb:usbLoad,bt:()=>{btLoad();btPoll()},ctrl:ctrlLoad,eth:ethLoad,settings:()=>{loadIniList()},cifs:()=>{cfLoad();cfPoll();pcLoad()},wifi:()=>{wlLoad();wifiInfo();wifiRemoteState()},
+ sddiag:()=>{loadTargets();srLoad()},padtest:ptInit,padsnac:ptInit,bioscheck:biosLoad,usb:usbLoad,bt:()=>{btLoad();btPoll()},ctrl:ctrlLoad,eth:ethLoad,settings:()=>{loadIniList()},cifs:()=>{cfLoad();cfPoll();pcLoad()},wifi:()=>{wlLoad();wifiInfo();wifiRemoteState()},
  flash:()=>{pollRestorePoint();checkAdmin();loadDisks();pollFlash();if(!IMGS.length)loadImages()}};
 let subObs=null;
 function openPage(s){
@@ -1326,7 +1330,7 @@ async function loadStatus(quiet){try{if(!ADV)await loadAdvisory();showStatus(awa
 let LASTSTATUS=null,WARNEDGEN4="";
 const DRIVE_HIGH_W=7; // drives rated above this can overload the SS1 dock
 // GitHub issue form for a drive that isn't in the drive list (filled in with what the drive reported)
-function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.31.2"+(ANDROID?" (Android)":"")});
+function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.32.0"+(ANDROID?" (Android)":"")});
  return "https://github.com/f3bandit/ss1_tool/issues/new?"+u.toString()}
 function showStatus(s){LASTSTATUS=s;
   const yes=v=>v==="1"?'<span class="pill good">installed</span>':'<span class="pill warn">not installed</span>';
@@ -1476,6 +1480,29 @@ function bkRestore(i,k){const b=BKSETS[i];if(!b)return;const one=k>=0?b.files[k]
 function bkShow(i){const b=i===""?null:BKSETS[i];api("/api/ini/backup-show",{set:b?b.name:""}).catch(e=>toast(e.message,true))}
 function bkDelete(i){const b=BKSETS[i];if(!b||!confirm("Delete backup "+b.name+" and all its files?"))return;busy(null,async()=>{await api("/api/ini/backup-delete",{set:b.name});loadBackups()})}
 // ---------- diagnostics / debug
+// ---------- offline SD card repair
+let SR={};
+function srName(d){return (d.model==="NVMe drive"?"NVMe drive":"USB drive"+(d.model?" · "+d.model:""))+" ("+(d.path||"").split("/").pop()+")"}
+async function srLoad(){try{SR=await api("/api/sdrepair",{});srDraw();
+  if(SR.fresh&&SR.last_result&&localStorage.getItem("srShown")!==SR.last_at){localStorage.setItem("srShown",SR.last_at);toast("SD card repaired offline: "+srRes(SR.last_result))}}
+ catch(e){$("srBody").innerHTML=`<p class="muted">${esc(e.message)}</p>`}}
+function srRes(r){return {clean:"no errors found, the card is marked clean",repaired:"the card was repaired",errors_left:"errors are left: repair it on a PC"}[r]||"the repair didn't run"}
+function srDraw(){const r=SR,c=r.candidates||[];let h="",a="";
+ const kv=(k,v)=>`<div class="kv"><span>${k}</span><span>${v}</span></div>`;
+ if(!r.drive&&!c.length)h=`<p style="margin:0"><b>No NVMe drive?</b> Plug a USB drive (exFAT, 1 GB free) into the SuperStation to repair the SD card without taking it out, then press Refresh.</p>`;
+ else if(!r.drive){h=`<p style="margin:0">Choose the drive that repairs the SD card:</p>`;a=c.map((d,i)=>`<button class="b p" onclick="srDo('setup','${esc(d.path)}')">Use the ${esc(srName(d))}</button>`).join("")}
+ else if(!r.drive_present){const n=r.new_drive;h=kv("Repair drive",esc(r.drive_model||"a USB drive")+" · not plugged in")+(n?`<p style="margin:8px 0 0">Another drive is plugged in: make it the repair drive?</p>`:`<p class="muted" style="margin:8px 0 0">Plug it back in, or another USB drive to use instead.</p>`);
+  if(n)a=`<button class="b p" onclick="srDo('setup','${esc(n.path)}')">Use the ${esc(srName(n))}</button>`;a+=`<button class="b d" onclick="srDo('remove')">Turn off offline repair</button>`}
+ else{h=kv("Repair drive",esc(srName({path:r.drive_mount,model:r.drive_model})))+kv("SD card at start-up",r.sd_dirty_at_boot?"<b>Wasn't shut down safely</b>":"Clean")+(r.armed?kv("Next restart","Repairs the SD card"):"");
+  a=`<button class="b p" onclick="srDo('go')">Restart and repair</button>`+(r.armed?`<button class="b" onclick="srDo('disarm')">Not at the next restart</button>`:"")+c.filter(d=>d.path!==r.drive_mount).map(d=>`<button class="b" onclick="srDo('setup','${esc(d.path)}')">Use the ${esc(srName(d))} instead</button>`).join("")+`<button class="b d" onclick="srDo('remove')">Turn off offline repair</button>`;
+  h+=`<p class="muted" style="margin:8px 0 0">The TV stays dark for about a minute while the SD card is repaired. Go back to the main menu first.</p>`}
+ if(r.last_result)h+=kv("Last repair",esc(srRes(r.last_result).replace(/^./,c=>c.toUpperCase()))+" · "+esc((r.last_at||"").slice(0,16)));
+ $("srBody").innerHTML=h+`<div class="row" style="margin-top:10px">${a}<button class="b" onclick="srLoad()">Refresh</button></div>`}
+function srDo(what,target){
+ if(what==="go"&&!confirm("Restart the SuperStation and repair the SD card?\n\nThe TV stays dark for about a minute while it's repaired, then the SuperStation starts again by itself. Don't switch it off in between."))return;
+ if(what==="remove"&&!confirm("Turn off offline repair?\n\nIts lines come off the SD card's u-boot.txt and its copy of Linux off the drive."))return;
+ const o=$("srOut");o.style.display="block";o.textContent=what==="setup"?"Copying the SuperStation's Linux to the drive (about 400 MB, under a minute on an NVMe drive)...":what==="go"?"Getting the repair ready...":"...";
+ busy(event&&event.target,async()=>{try{const j=await apiCM("/api/sdrepair",{do:what,target:target||""});o.textContent=j.message||"Done";toast(j.message||"Done");if(what!=="go")srLoad()}catch(e){o.textContent=e.message;throw e}})}
 async function loadTargets(){try{const t=await api("/api/targets");$("diagTarget").innerHTML=t.map(x=>`<option value="${x.path}">${x.path} (${x.fs})</option>`).join("")}catch(e){}}
 function diag(test){const tgt=$("diagTarget").value||"/media/fat";
  if(test==="fsrepair"&&!confirm(`Repair the file system on ${tgt}?\n\nThe drive is unmounted while it's repaired, so nothing may be using it: go back to the main menu first. Repairs can remove broken files or folders the checker can't fix, so back up anything important first if you can.`))return;
@@ -2779,7 +2806,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("## SS1 Tool for Android: app problem report","");
   add("Where",where);add("Problem",types.join(", ")||"not given");
   L.push("","### What happened","",maskText($("repText").value.trim(),privWords())||"(not described)","","### App");
-  add("SS1 Tool",(d.app_version||"1.31.2")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
+  add("SS1 Tool",(d.app_version||"1.32.0")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
   L.push("","### Device");
   add("Model",d.model);add("Android",d.android?`${d.android} (API ${d.sdk})`:"");add("Type",d.form&&`${d.form}, ${d.orientation}`);
   add("Screen",d.px&&`${d.px} px, ${d.dp} dp, ${d.dpi} dpi`);add("Page size",`${document.documentElement.clientWidth}x${innerHeight} CSS px at ${devicePixelRatio}x`);
@@ -2801,7 +2828,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("","---","_No personal data: no IP or MAC addresses, network names, passwords, accounts, device IDs or location._");
   REPORT=L.join("\n");
   const bs=getComputedStyle(document.body);
-  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.31.2",store:d.store||"",made:new Date().toISOString(),where,types,
+  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.32.0",store:d.store||"",made:new Date().toISOString(),where,types,
    viewport:{w:document.documentElement.clientWidth,h:innerHeight,dpr:devicePixelRatio},font:{body:bs.fontSize,family:bs.fontFamily},
    device:{model:d.model,android:d.android,sdk:d.sdk,form:d.form,orientation:d.orientation,px:d.px,dp:d.dp,dpi:d.dpi,display_size:d.display_size,font_scale:d.font_scale,text_zoom:d.text_zoom,bold_text:d.bold_text,high_contrast_text:d.high_contrast_text,magnification:d.magnification,webview:d.webview,navigation:d.navigation,multi_window:d.multi_window},
    autoFixed:window.AFIXED||[],log:APPLOG,pages:REPSNAP?REPSNAP.pages:[]});

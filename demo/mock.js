@@ -346,6 +346,12 @@
       startJob(kind, title);
       return [200, { ok: true, started: true }];
     }
+    // Diag > SD diagnostics > Repair the SD card offline: the actions answer like the app does
+    if (path === "sdrescue" && body && body.do) {
+      const M = { setup: "The drive is the repair drive now.", arm: "The next restart repairs the SD card.", disarm: "Not at the next restart.",
+        remove: "Offline SD card repair removed.", go: "Restarting to repair the SD card. The TV stays dark for about a minute while it's repaired, then the SuperStation starts again by itself. Reconnect after that to see the result." };
+      return [200, { ok: true, message: "Demo: " + (M[body.do] || MSG) }, body.do === "setup" ? 1500 : undefined];
+    }
     if (path.startsWith("wizard/card/")) return [200, { ok: true, message: MSG, status: {}, overlap: false, scripts: {}, samba: true }];
     const v = get(path);
     if (v !== null && (method === "GET" || !/(save|set|delete|remove|apply|install|start|restore|create|rename|mkdir|reset|import|label|cleanup|mode|select|keep|revert|undo|reload|test|open|copy|take|upload|transfer)/.test(path))) {
