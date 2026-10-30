@@ -298,6 +298,12 @@
       case "status": return need() || [200, get("status")];
       case "discover": return [200, get("discover")];
       case "dash": return need() || [200, dash()];
+      case "driveguard": {
+        if (need()) return need();
+        if (body && (body.do === "on" || body.do === "off")) S.dgOff = body.do === "off";
+        return [200, S.dgOff ? { ok: true, on: false, log: [] } : { ok: true, on: true, hook: "1", games: "1", games_mount: "/media/usb0", repair_mount: "/media/repair",
+          log: ["2026-10-30 09:12 the repair drive went to /media/repair, read-only", "2026-10-30 09:12 the games drive is at /media/usb0"] }];
+      }
       case "dash/dmesg": return [200, clone(D._dmesg)];
       case "fs/list": return need() || [200, fsList(q.get("path"))];
       case "ini": { const f = q.get("file") || "/media/fat/MiSTer.ini"; return [200, { path: f, text: (D._ini || {})[f] || "[MiSTer]\n" }]; }
