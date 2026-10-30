@@ -18,7 +18,7 @@
 <section class="hero">
  <h1>FAQ</h1>
  <p class="lead">Common SuperStation One problems and their fixes, the video settings and DIP switches, and what SS1 Tool does and why.</p>
- <p class="faqnav"><a href="#ss1">SuperStation problems</a><a href="#video">Video and DIP switches</a><a href="#tool">How SS1 Tool works</a><a href="#help">Getting help</a></p>
+ <p class="faqnav"><a href="#ss1">SuperStation problems</a><a href="#video">Video and DIP switches</a><a href="#tool">How SS1 Tool works</a><a href="#drives">Drives, repairs and updates</a><a href="#help">Getting help</a></p>
 </section>
 
 <h2 id="ss1">SuperStation problems</h2>
@@ -129,6 +129,47 @@
 </details>
 <details><summary>The SSH terminal won't open</summary>
  <p>It uses Windows' own OpenSSH client. Add it in <b>Windows Settings › System › Optional features</b>.</p>
+</details>
+</div>
+
+<h2 id="drives">Drives, repairs and updates: what SS1 Tool changes</h2>
+<div class="faq">
+<details><summary>What does SS1 Tool put on my SuperStation, and does any of it phone home?</summary>
+ <p>Only what's listed here, all of it in plain shell scripts you can read, and none of it goes online or sends anything anywhere. Everything SS1 Tool adds can be removed from the app:</p>
+ <ul>
+  <li><code>/media/fat/Scripts/.ss1tool/</code>: its helper scripts, their settings and logs (power watch, drive guard, offline repair, the TV helpers).</li>
+  <li>A few lines in <code>linux/user-startup.sh</code>, each in its own marked block (<code># ss1tool …: BEGIN</code> / <code>END</code>), for the helpers that start with the SuperStation. Lines that were there before stay as they are.</li>
+  <li>Drive guard's hook (below) in Linux's own <code>/etc/usbmount</code> and <code>/etc/udev/rules.d</code>.</li>
+  <li>Offline repair's copy of Linux on the repair drive, and its lines in <code>linux/u-boot.txt</code> (below).</li>
+ </ul>
+ <p>It never touches your games, saves or cores.</p>
+</details>
+<details><summary>What is Drive guard?</summary>
+ <p>MiSTer numbers USB drives in the order they come up: the first is <code>/media/usb0</code>, the next <code>usb1</code>. A USB stick that comes up a moment before the dock's NVMe drive takes <code>usb0</code>, and the games drive moves to <code>usb1</code>. Everything that keeps a full path to a game then points at the wrong drive: Console Mode's history, MiSTer's recent files and favourites, MGL files, Zaparoo cards. That's when games "go missing".</p>
+ <p>Drive guard (on by default, <b>Diag › SD diagnostics</b>) stops that:</p>
+ <ul>
+  <li><b>The games drive is always <code>/media/usb0</code>.</b> It's the dock's NVMe drive, or else the drive with your <code>games</code> folder, remembered by its partition ID. If another drive got <code>usb0</code> first, the two swap places, but only if nothing is using that drive. Otherwise it waits for the next start-up.</li>
+  <li><b>The repair drive is kept out of the list</b> (next question).</li>
+ </ul>
+ <p>It's one script (<code>Scripts/.ss1tool/drives/ss1_drives.sh</code>). MiSTer's own USB mounting runs it as each drive is plugged in, and <code>user-startup.sh</code> runs it at every start-up, which also puts it back after a MiSTer Linux update. Nothing on any drive is changed or moved: only which <code>/media/…</code> folder the drive appears at. <b>Turn off</b> removes it all.</p>
+</details>
+<details><summary>Where did my repair USB stick go? It isn't usb0 any more</summary>
+ <p>It's at <code>/media/repair</code>, read-only, on purpose. As a normal <code>/media/usbN</code> drive it got used for things it isn't for: Update All's downloader (with <code>prefer_external</code>) puts games folders on the first USB drive it finds, and other tools look there for games or room. Hidden and read-only, nothing writes to it except the repair itself, which makes it writable only while it updates its own files. It still gets repaired with every other drive. Unplug it and plug it in again and it goes straight back to <code>/media/repair</code>.</p>
+ <p>A drive counts as the repair drive only if it has a repair copy of Linux on it (<code>ss1tool/rescue/os.img</code>, or Phosphor's <code>phosphor/rescue/os.img</code>), and never if it's the dock's NVMe drive.</p>
+</details>
+<details><summary>What does "Repair the SD card offline" put on my drive and SD card?</summary>
+ <p>The SD card can't be repaired while the SuperStation runs from it. So SS1 Tool puts a copy of your SuperStation's own MiSTer Linux on a USB stick (about 400 MB, in <code>ss1tool/rescue</code>; nothing else on the stick changes). It also adds a few lines to the SD card's <code>linux/u-boot.txt</code>, starting <code>ss1t_</code>, that do nothing at all until you press <b>Restart and repair</b>. Every other start-up is exactly as before.</p>
+ <p>The repair runs <code>fsck.exfat</code> on the SD card and on your other drives while nothing is using them, then starts Console Mode again and shows the results. <b>Turn off offline repair</b> takes the lines and the copy away. A stick used by both SS1 Tool and Phosphor holds one copy for each (<code>ss1tool/rescue</code> and <code>phosphor/rescue</code>): each card starts the copy made from its own Linux.</p>
+</details>
+<details><summary>Is the update guard changing my updates?</summary>
+ <p>No. Updates are always yours to run. SS1 Tool only does two things around them:</p>
+ <ul>
+  <li><b>Keeps a copy</b> of every version of the files an update replaces (MiSTer, the menu core, Linux, Console Mode), on your PC (<b>Files › MiSTer &amp; Linux backups</b>), so you can put an earlier one back if an update breaks something. Nothing is put back unless you press <b>Put back</b>, and that saves the version in use first so it can be undone.</li>
+  <li><b>Keeps Console Mode updates.</b> Console Mode goes back to the previous version if it restarts before an update has been confirmed. SS1 Tool confirms it the same way Console Mode does, and only when the new version is running (see "Console Mode went back to the old version" above).</li>
+ </ul>
+</details>
+<details><summary>My games show as missing after plugging in a USB stick</summary>
+ <p>The games drive was moved off <code>usb0</code> (see Drive guard). With SS1 Tool 1.32.2 or later connected once, it's put back at the next start-up, and it stays at <code>usb0</code> from then on. Nothing was deleted: the games were on the same drive under a different name.</p>
 </details>
 </div>
 
