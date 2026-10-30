@@ -168,6 +168,15 @@
   <li><b>Keeps Console Mode updates.</b> Console Mode goes back to the previous version if it restarts before an update has been confirmed. SS1 Tool confirms it the same way Console Mode does, and only when the new version is running (see "Console Mode went back to the old version" above).</li>
  </ul>
 </details>
+<details><summary>The dock's NVMe drive: why it sometimes goes missing</summary>
+ <p>The dock's NVMe slot is a JMicron USB-to-NVMe bridge, and it has a few quirks:</p>
+ <ul>
+  <li><b>Missing after a restart:</b> a restart keeps the dock powered, and the bridge can come back without its drive ("Unit Not Ready"). Unplugging the SuperStation's power for 10 seconds always clears it.</li>
+  <li><b>A different drive number:</b> MiSTer numbers USB drives in the order they come up, so the NVMe drive can be <code>usb0</code> one day and <code>usb1</code> the next. Drive guard keeps it at <code>usb0</code>.</li>
+  <li><b>An empty slot</b> can show up as a drive that never becomes ready. The SuperStation's own rule removes it after 15 seconds.</li>
+  <li><b>Gen 4 NVMe drives</b> can make the SuperStation reboot by itself or show file system errors. Use a Gen 3 drive.</li>
+ </ul>
+</details>
 <details><summary>My games show as missing after plugging in a USB stick</summary>
  <p>The games drive was moved off <code>usb0</code> (see Drive guard). With SS1 Tool 1.32.2 or later connected once, it's put back at the next start-up, and it stays at <code>usb0</code> from then on. Nothing was deleted: the games were on the same drive under a different name.</p>
 </details>
