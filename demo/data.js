@@ -2304,12 +2304,12 @@ window.DEMO_DATA={
 "image": ""
 },
 "update": {
-"current": "1.32.3",
-"latest": "1.32.3",
+"current": "1.32.4",
+"latest": "1.32.4",
 "available": false,
 "checked": 1792103732,
 "notes": "## SS1 Tool 1.31.0\r\n\r\n### Video: Taki's settings, by themselves\r\nThe SuperStation has its own video chip for S-Video and composite: a Sony encoder that needs `vga_mode=subcarrier` in `MiSTer.ini`. Taki ships `MiSTer.ini` plus four video profiles (RGHV, RGsB, SVID, YPbP) set for it. When SS1 Tool connects to a Console Mode SuperStation whose files don't match, it fixes them by itself and tells you, front and center, what it changed.\r\n- Only the video lines are edited (`vga_mode`, `composite_sync`, `vga_sog`, `video_info`, `logo`). Everything else in each file stays as it was: `main=`, your HDMI settings, per-core sections, comments.\r\n- A missing profile is added, made from your `MiSTer.ini` with that profile's settings.\r\n- `MiSTer_example.ini` is renamed `MiSTer_example.ini.txt`. MiSTer counts it as a video profile and only offers the first three it finds, so it hid one of Taki's.\r\n- Copies come first: on the SuperStation in `ss1tool_backups/video-ini-<date>`, and in Backups on your PC.\r\n- It happens once per SD card. After that, your own changes stay: change anything you like on the Video page.\r\n- A SuperStation running Phosphor is left alone; Phosphor does the same when it's installed or updated.",
-"page": "https://github.com/f3bandit/ss1_tool/releases/tag/1.32.3",
+"page": "https://github.com/f3bandit/ss1_tool/releases/tag/1.32.4",
 "sha256": "f1622494f8a924a59ec1df1644db0081e57b99984be0ac7b87475da3a796a416",
 "downloaded": false,
 "mode": "notify",
@@ -2331,7 +2331,7 @@ window.DEMO_DATA={
 "connected": false,
 "host": "192.168.1.50",
 "user": "root",
-"version": "1.32.3"
+"version": "1.32.4"
 },
 "discover": {
 "devices": [
