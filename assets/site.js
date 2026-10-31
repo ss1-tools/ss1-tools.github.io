@@ -2,7 +2,7 @@
 const SITE = {
   // SS1 Tool for Android is sold on Google Play.
   // playLive: set to true once the app is public on Google Play (after the closed test).
-  playLive: false,
+  playLive: true,
   playUrl: "https://play.google.com/store/apps/details?id=com.f3bandit.ss1tool",
   // Closed test sign-up: the Google Group testers join, and the Play testing link
   // (Play Console › Closed testing › Testers › Copy link). Empty = not shown yet.
