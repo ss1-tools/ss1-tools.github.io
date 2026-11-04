@@ -5,7 +5,7 @@ import pathlib, re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 NAV = [("index.html", "Home"), ("windows.html", "Windows"), ("android.html", "Android"), ("demo.html", "Try it"),
-       ("faq.html", "FAQ"), ("support.html", "Support"), ("https://discord.gg/CkSEwnjwMY", "Discord"), ("legal/eula.html", "License"), ("legal/privacy.html", "Privacy")]
+       ("faq.html", "FAQ"), ("support.html", "Support"), ("legal/eula.html", "License"), ("legal/privacy.html", "Privacy")]
 
 def page(src: pathlib.Path):
     text = src.read_text(encoding="utf-8")
@@ -41,7 +41,7 @@ def page(src: pathlib.Path):
 </main>
 <footer><div class="wrap">
  <p class="kofi"><a href="https://ko-fi.com/W2V228VDIQ"><img src="{up}assets/img/kofi.svg" alt="Support SS1 Tool on Ko-fi" width="223" height="30"></a></p>
- <nav aria-label="Legal"><a href="{up}legal/eula.html">License agreement (EULA)</a><a href="{up}legal/privacy.html">Privacy policy</a><a href="{up}legal/refunds.html">Refund policy</a><a href="{up}support.html">Support</a><a href="https://github.com/f3bandit/ss1_tool">GitHub</a><a href="https://discord.gg/CkSEwnjwMY">Discord</a></nav>
+ <nav aria-label="Legal"><a href="{up}legal/eula.html">License agreement (EULA)</a><a href="{up}legal/privacy.html">Privacy policy</a><a href="{up}legal/refunds.html">Refund policy</a><a href="{up}support.html">Support</a><a href="https://github.com/f3bandit/ss1_tool">GitHub</a></nav>
  <p>SS1 Tool and SS1 Tool for Android are independent, unofficial community tools made by f3bandit (F3 Digital Systems). They are not made, endorsed or supported by Taki Udon, Retro Remake or the MiSTer project. SuperStation One and all other product names are trademarks of their respective owners and are used only to describe compatibility.</p>
  <p>&copy; 2026 f3bandit, trading as F3 Digital Systems. All rights reserved.</p>
 </div></footer>
