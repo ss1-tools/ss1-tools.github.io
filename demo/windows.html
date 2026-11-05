@@ -433,7 +433,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </style>
 </head>
 <body><div id="demoBar">Demo: nothing you press changes anything</div>
-<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.32.13</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
+<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.32.14</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
 <div id="aUpd" class="updbanner" style="display:none"></div>
 <div id="pwrBanner" class="updbanner" style="display:none;background:#f851491a;border-bottom-color:#f8514959"><span><b style="color:var(--bad)">Power supply problem?</b> <span id="pwrBannerText"></span></span><button class="b p" onclick="openPart('diag','power')">What helps</button><button class="b" onclick="$('pwrBanner').style.display='none'">Dismiss</button></div>
 <div id="updBanner" class="updbanner pc-only no-steam" style="display:none"><span id="updBannerText"></span><button class="b p" id="updBannerGo" onclick="updInstall()">Restart now</button><button class="b" id="updBannerNotes" style="display:none" onclick="updShowNotes()">What's new</button><button class="b" onclick="updSnooze()">Not now</button></div>
@@ -913,6 +913,10 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
   <pre class="out" id="btJobLog" style="max-height:180px"></pre><div class="row" id="btJobBtns" style="margin-top:10px;display:none"><button class="b" onclick="btJobHide()">Close</button></div></div>
  <div class="card"><h3>Bluetooth on the SuperStation</h3><div class="row" id="btStatus"><span class="muted">-</span></div>
   <p class="muted" style="margin:10px 0 0"><b>Start pairing</b> presses F11 on the SuperStation, which starts pairing from the MiSTer menu. Put the controller in pairing mode first. If Console Mode is on screen, open the MiSTer menu first.</p></div>
+ <div class="card" id="btFix"><h3>Bluetooth not working?</h3><p class="muted" style="margin:0 0 10px">Controllers won't pair, pairings are gone after every restart, or Bluetooth won't switch on: <b>Check</b> looks for what's wrong (it changes nothing), <b>Repair Bluetooth</b> fixes it. The repair backs up the pairings on this PC first, keeps a copy of MiSTer's pairings image on the SD card, repairs or rebuilds the image, takes back pairings saved where they'd be lost, makes room in it, switches Bluetooth back on and checks it again. Bluetooth controllers disconnect for a few seconds.</p>
+  <div class="row"><button class="b" onclick="btCheck()">Check</button><button class="b p" onclick="btRepair()">Repair Bluetooth</button><button class="b d" onclick="btReset()">Start fresh</button><span class="muted" id="btFixTime"></span></div>
+  <p class="muted" style="margin:8px 0 0"><b>Start fresh</b>, when a repair isn't enough: Bluetooth starts over with a blank pairings image (MiSTer's own reset), so every controller is unpaired. The pairings are backed up on this PC first: restore that backup afterwards, or pair the controllers again.</p>
+  <div id="btFixList" style="margin-top:10px"></div></div>
  <div class="card btctl"><h3>Paired devices</h3><div id="btList"><span class="muted">-</span></div>
   <div class="row" style="margin-top:10px"><button class="b" onclick="btExport('')">Export all pairings</button><label class="b" style="cursor:pointer">Import pairings<input type="file" accept=".zip" hidden onchange="btImport(this)"></label><button class="b d" onclick="btRemoveAll()">Remove all pairings</button><span class="muted">A backup is saved on this PC before anything is removed or replaced.</span></div></div>
  <div class="card btctl"><h3>Backups on this PC</h3><p class="muted" id="btDir" style="margin:0 0 8px"></p>
@@ -1091,7 +1095,7 @@ fstrim -v /media/usb0</pre>
  <div class="card about">
   
   <h2 style="font-size:28px;margin:0">SS1 Tool</h2>
-  <p class="muted" style="margin:2px 0 16px">Version 1.32.13</p>
+  <p class="muted" style="margin:2px 0 16px">Version 1.32.14</p>
   <p style="font-size:16px;margin:0 0 6px">Developed by <b>f3bandit</b></p>
   <p style="margin:0 0 18px">Unofficial Super Station One Tools</p>
   <p style="margin:0 0 18px">Special thanks to Taki Udon.</p>
@@ -1134,7 +1138,7 @@ fstrim -v /media/usb0</pre>
   <p style="margin-bottom:0">As Android moves on, a future update may raise the minimum version. Android versions below the new minimum won't be supported from then on: the version of SS1 Tool you have keeps working, but it won't get updates or fixes for them. A change to the minimum is listed in the release notes.</p>
   <p class="muted" id="supportThis" style="margin-bottom:0"></p></div>
  <div class="card android-only" id="devCard"><h3>This device</h3><p class="muted" style="margin-top:0">SS1 Tool adjusts its layout to your screen, text size and accessibility settings. If something doesn't fit, include this when you report it.</p><div id="devInfo" class="muted">-</div></div>
- <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.32.13. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
+ <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.32.14. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
   <p id="licInfo" class="muted"></p>
   <div class="row" style="margin-bottom:10px"><button class="b" onclick="demoNav('ss1app://update/check')">Check for updates</button><button class="b" onclick="demoNav('ss1app://eula/view')">License Agreement</button><a class="b" href="https://ss1-tools.github.io/legal/privacy.html" target="_blank" rel="noopener">Privacy policy</a></div>
   <details><summary>Open-source licenses</summary><p class="muted" style="margin-top:8px">SS1 Tool for Android includes the Go programming language's standard library and the Go projects golang.org/x/crypto, golang.org/x/sys and golang.org/x/image, under this license:</p>
@@ -1194,7 +1198,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre></deta
  <div class="row" style="justify-content:flex-end"><button class="b" onclick="closeModal()">Close</button><button class="b p" id="mBtn" onclick="reconnect()">Reconnect</button></div>
 </div></div>
 <div id="toast"></div>
-<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.32.13</span></div></div>
+<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.32.14</span></div></div>
 <script>
 // Recent app errors, kept for the app problem report (addresses and other identifying details removed).
 const APPLOG=[];
@@ -1373,7 +1377,7 @@ async function loadStatus(quiet){try{if(!ADV)await loadAdvisory();showStatus(awa
 let LASTSTATUS=null,WARNEDGEN4="";
 const DRIVE_HIGH_W=7; // drives rated above this can overload the SS1 dock
 // GitHub issue form for a drive that isn't in the drive list (filled in with what the drive reported)
-function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.32.13"+(ANDROID?" (Android)":"")});
+function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.32.14"+(ANDROID?" (Android)":"")});
  return "https://github.com/f3bandit/ss1_tool/issues/new?"+u.toString()}
 function showStatus(s){LASTSTATUS=s;
   const yes=v=>v==="1"?'<span class="pill good">installed</span>':'<span class="pill warn">not installed</span>';
@@ -1766,6 +1770,13 @@ async function btPoll(fresh){if(btPolling)return;btPolling=true;let last=null;
   if(!first){if(last.error)toast(last.error,true);else{toast(last.result);if(last.download)demoNav("/api/bt/export-file?t="+TOKEN)}}
   btBackupsLoad();if(connectedHost)btLoad()}}
 function btRemove(mac,name){if(!confirm(`Remove the pairing for ${name}?\n\nA backup is saved on this PC first. To use it again, pair it again.`))return;btRun("/api/bt/action",{action:"remove",mac})}
+async function btCheck(){if(!connectedHost)return toast("Connect to the SuperStation first",true);
+ const L=$("btFixList");L.innerHTML='<span class="muted">Checking...</span>';
+ try{const j=await api("/api/bt/check");$("btFixTime").textContent=new Date().toLocaleTimeString();
+  L.innerHTML=j.found.length?'<ul style="margin:0">'+j.found.map(f=>`<li>&#9888; ${esc(f)}</li>`).join("")+'</ul><p class="muted" style="margin:8px 0 0">Repair Bluetooth fixes these.</p>':'<span class="pill good">&#10003; No problems found</span>'}
+ catch(e){L.innerHTML="";toast(e.message,true)}}
+function btRepair(){if(!connectedHost)return toast("Connect to the SuperStation first",true);if(!confirm("Repair Bluetooth on the SuperStation?\n\nThe pairings are backed up on this PC first. Bluetooth controllers disconnect for a few seconds."))return;$("btFixList").innerHTML="";btRun("/api/bt/repair")}
+function btReset(){if(!connectedHost)return toast("Connect to the SuperStation first",true);if(!confirm("Start Bluetooth fresh on the SuperStation?\n\nEvery controller is unpaired (MiSTer makes a blank pairings image). The pairings are backed up on this PC first, so you can restore them afterwards."))return;$("btFixList").innerHTML="";btRun("/api/bt/reset")}
 function btRemoveAll(){if(!connectedHost)return toast("Connect to the SuperStation first",true);if(!confirm("Remove EVERY Bluetooth pairing from the SuperStation?\n\nA backup is saved on this PC first."))return;btRun("/api/bt/remove-all")}
 function btExport(mac){if(!connectedHost)return toast("Connect to the SuperStation first",true);btRun("/api/bt/export?t="+TOKEN+(mac?"&mac="+encodeURIComponent(mac):""))}
 async function btImport(inp){const f=inp.files[0];inp.value="";if(!f)return;if(!connectedHost)return toast("Connect to the SuperStation first",true);
@@ -2913,7 +2924,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("## SS1 Tool for Android: app problem report","");
   add("Where",where);add("Problem",types.join(", ")||"not given");
   L.push("","### What happened","",maskText($("repText").value.trim(),privWords())||"(not described)","","### App");
-  add("SS1 Tool",(d.app_version||"1.32.13")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
+  add("SS1 Tool",(d.app_version||"1.32.14")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
   L.push("","### Device");
   add("Model",d.model);add("Android",d.android?`${d.android} (API ${d.sdk})`:"");add("Type",d.form&&`${d.form}, ${d.orientation}`);
   add("Screen",d.px&&`${d.px} px, ${d.dp} dp, ${d.dpi} dpi`);add("Page size",`${document.documentElement.clientWidth}x${innerHeight} CSS px at ${devicePixelRatio}x`);
@@ -2935,7 +2946,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("","---","_No personal data: no IP or MAC addresses, network names, passwords, accounts, device IDs or location._");
   REPORT=L.join("\n");
   const bs=getComputedStyle(document.body);
-  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.32.13",store:d.store||"",made:new Date().toISOString(),where,types,
+  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.32.14",store:d.store||"",made:new Date().toISOString(),where,types,
    viewport:{w:document.documentElement.clientWidth,h:innerHeight,dpr:devicePixelRatio},font:{body:bs.fontSize,family:bs.fontFamily},
    device:{model:d.model,android:d.android,sdk:d.sdk,form:d.form,orientation:d.orientation,px:d.px,dp:d.dp,dpi:d.dpi,display_size:d.display_size,font_scale:d.font_scale,text_zoom:d.text_zoom,bold_text:d.bold_text,high_contrast_text:d.high_contrast_text,magnification:d.magnification,webview:d.webview,navigation:d.navigation,multi_window:d.multi_window},
    autoFixed:window.AFIXED||[],log:APPLOG,pages:REPSNAP?REPSNAP.pages:[]});
