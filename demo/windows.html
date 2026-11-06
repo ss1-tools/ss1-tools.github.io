@@ -433,7 +433,7 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
 </style>
 </head>
 <body><div id="demoBar">Demo: nothing you press changes anything</div>
-<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.32.14</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
+<header><button class="b navtog" onclick="navToggle()" aria-label="Menu">&#9776;</button><h1>SS1 <span>Tool</span></h1><span class="muted">v1.32.15</span><span id="updPill" class="pc-only no-steam"></span><div id="conn">Not connected</div><button class="b pc-only" onclick="quitApp()">Quit</button></header>
 <div id="aUpd" class="updbanner" style="display:none"></div>
 <div id="pwrBanner" class="updbanner" style="display:none;background:#f851491a;border-bottom-color:#f8514959"><span><b style="color:var(--bad)">Power supply problem?</b> <span id="pwrBannerText"></span></span><button class="b p" onclick="openPart('diag','power')">What helps</button><button class="b" onclick="$('pwrBanner').style.display='none'">Dismiss</button></div>
 <div id="updBanner" class="updbanner pc-only no-steam" style="display:none"><span id="updBannerText"></span><button class="b p" id="updBannerGo" onclick="updInstall()">Restart now</button><button class="b" id="updBannerNotes" style="display:none" onclick="updShowNotes()">What's new</button><button class="b" onclick="updSnooze()">Not now</button></div>
@@ -809,6 +809,10 @@ body.repshot #toast,body.repshot #toTop{display:none!important}
  <div class="card"><h3>Saved versions</h3><p class="muted" id="sysDir" style="margin:0 0 8px"></p>
   <table><thead><tr><th style="width:26px"><input type="checkbox" id="sysAll" onchange="document.querySelectorAll('.sysTick').forEach(c=>c.checked=this.checked)"></th><th>Part</th><th>Version</th><th>First seen</th><th>Size</th><th></th><th></th></tr></thead><tbody id="sysList"></tbody></table>
   <div class="row" style="margin-top:10px"><button class="b" onclick="api('/api/sysbk/open',{})">Open backups folder</button><button class="b d" onclick="sysDelete(this)">Delete ticked</button><span class="muted">Deleting is the only way a saved version goes away.</span></div></div>
+ <div class="card"><h3>Older Linux versions</h3>
+  <p class="muted" style="margin:0 0 8px">No backup of the Linux that worked? MiSTer's own Linux versions, the earlier ones included, are kept on SS1 Tool's GitHub (MiSTer-devel's files, unchanged). Download one (with the rest of what a Linux update replaces: u-boot and the linux folder's other files) and it shows in Saved versions above as "MiSTer-devel's", ready to Put back. The Linux on the SuperStation is saved on this PC first (a SuperStation's own Linux from Retro Remake has its own kernel), so it can always be put back. About 130 to 160 MB to download, 400 MB on this PC.</p>
+  <table><thead><tr><th>Linux</th><th>Released</th><th>Download</th><th></th></tr></thead><tbody id="sysLnx"><tr><td colspan="4" class="muted">Reading the list from GitHub…</td></tr></tbody></table>
+  <p class="muted" id="sysLnxMsg" style="margin:8px 0 0"></p></div>
  <div class="card" id="sysSetCard" style="display:none"><h3>Settings a Linux update can reset</h3>
   <p class="muted" style="margin:0 0 8px">A Linux update puts these back to stock. SS1 Tool keeps a copy of each version and compares them each time it connects.</p>
   <div id="sysSets"></div></div>
@@ -1095,7 +1099,7 @@ fstrim -v /media/usb0</pre>
  <div class="card about">
   
   <h2 style="font-size:28px;margin:0">SS1 Tool</h2>
-  <p class="muted" style="margin:2px 0 16px">Version 1.32.14</p>
+  <p class="muted" style="margin:2px 0 16px">Version 1.32.15</p>
   <p style="font-size:16px;margin:0 0 6px">Developed by <b>f3bandit</b></p>
   <p style="margin:0 0 18px">Unofficial Super Station One Tools</p>
   <p style="margin:0 0 18px">Special thanks to Taki Udon.</p>
@@ -1138,7 +1142,7 @@ fstrim -v /media/usb0</pre>
   <p style="margin-bottom:0">As Android moves on, a future update may raise the minimum version. Android versions below the new minimum won't be supported from then on: the version of SS1 Tool you have keeps working, but it won't get updates or fixes for them. A change to the minimum is listed in the release notes.</p>
   <p class="muted" id="supportThis" style="margin-bottom:0"></p></div>
  <div class="card android-only" id="devCard"><h3>This device</h3><p class="muted" style="margin-top:0">SS1 Tool adjusts its layout to your screen, text size and accessibility settings. If something doesn't fit, include this when you report it.</p><div id="devInfo" class="muted">-</div></div>
- <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.32.14. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
+ <div class="card android-only"><h3>SS1 Tool for Android</h3><p>Version 1.32.15. An unofficial tool for the SuperStation One; it isn't made, endorsed or supported by Taki Udon or Retro Remake. Sold by F3 Digital Systems (f3bandit).</p>
   <p id="licInfo" class="muted"></p>
   <div class="row" style="margin-bottom:10px"><button class="b" onclick="demoNav('ss1app://update/check')">Check for updates</button><button class="b" onclick="demoNav('ss1app://eula/view')">License Agreement</button><a class="b" href="https://ss1-tools.github.io/legal/privacy.html" target="_blank" rel="noopener">Privacy policy</a></div>
   <details><summary>Open-source licenses</summary><p class="muted" style="margin-top:8px">SS1 Tool for Android includes the Go programming language's standard library and the Go projects golang.org/x/crypto, golang.org/x/sys and golang.org/x/image, under this license:</p>
@@ -1198,7 +1202,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</pre></deta
  <div class="row" style="justify-content:flex-end"><button class="b" onclick="closeModal()">Close</button><button class="b p" id="mBtn" onclick="reconnect()">Reconnect</button></div>
 </div></div>
 <div id="toast"></div>
-<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.32.14</span></div></div>
+<div id="credit"><a class="kofi pc-only" href="https://ko-fi.com/W2V228VDIQ" target="_blank" rel="noopener" title="SS1 Tool is free - support it with a coffee on Ko-fi"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi" width="150" height="20"></a><div>f3bandit<span>v1.32.15</span></div></div>
 <script>
 // Recent app errors, kept for the app problem report (addresses and other identifying details removed).
 const APPLOG=[];
@@ -1377,7 +1381,7 @@ async function loadStatus(quiet){try{if(!ADV)await loadAdvisory();showStatus(awa
 let LASTSTATUS=null,WARNEDGEN4="";
 const DRIVE_HIGH_W=7; // drives rated above this can overload the SS1 dock
 // GitHub issue form for a drive that isn't in the drive list (filled in with what the drive reported)
-function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.32.14"+(ANDROID?" (Android)":"")});
+function driveReportURL(model,fw,pw){const u=new URLSearchParams({template:"nvme_drive.yml",title:"NVMe drive: "+model,model:model,firmware:fw||"",power:pw?pw+" W":"",app:"SS1 Tool 1.32.15"+(ANDROID?" (Android)":"")});
  return "https://github.com/f3bandit/ss1_tool/issues/new?"+u.toString()}
 function showStatus(s){LASTSTATUS=s;
   const yes=v=>v==="1"?'<span class="pill good">installed</span>':'<span class="pill warn">not installed</span>';
@@ -2536,7 +2540,15 @@ async function pollSDBackup(){if(sbPolling)return;sbPolling=true;try{for(;;){con
   await new Promise(r=>setTimeout(r,800))}}catch(e){toast(e.message,true)}sbPolling=false}
 // ---------- MiSTer & Linux backups
 let SYS={versions:[]},sysPolling=false;
-async function sysLoad(probe){try{const j=await api("/api/sysbk/status"+(probe?"?probe=1":""));SYS=j;$("sysOn").checked=j.on;sysRender(j);if(j.state.running)sysPoll()}catch(e){}}
+async function sysLoad(probe){try{const j=await api("/api/sysbk/status"+(probe?"?probe=1":""));SYS=j;$("sysOn").checked=j.on;sysRender(j);if(j.state.running)sysPoll()}catch(e){}sysLnxLoad()}
+async function sysLnxLoad(){try{const j=await api("/api/sysbk/linux-list");const st=SYS&&SYS.state||{},run=st.running;
+ $("sysLnx").innerHTML=j.versions&&j.versions.length?j.versions.map(v=>{const d=v.Date&&v.Date.length===8?new Date(+v.Date.slice(0,4),+v.Date.slice(4,6)-1,+v.Date.slice(6,8)).toLocaleDateString():"";
+   let act=v.Saved?'<span class="pill good">Saved here</span>':`<button class="b" ${run?"disabled":""} onclick="sysLnxGet('${esc(v.ID)}',this)">Download</button>`;
+   if(run&&st.part==="Linux"&&st.version===v.ID&&/^Downloading/.test(st.message||""))act=`<span class="pill info">Downloading… ${st.total?Math.floor(100*st.done/st.total):0}%</span>`;
+   return `<tr><td>${esc(v.ID)}</td><td>${esc(d)}</td><td>${fmtB(v.DlSize)}</td><td style="text-align:right">${act}</td></tr>`}).join("")
+  :'<tr><td colspan="4" class="muted">No versions published yet.</td></tr>';$("sysLnxMsg").textContent=""}
+ catch(e){$("sysLnx").innerHTML='<tr><td colspan="4" class="muted">Couldn\'t read the list from GitHub. Check this PC\'s internet connection.</td></tr>'}}
+function sysLnxGet(id,b){busy(b,async()=>{await api("/api/sysbk/linux-get",{id});$("sysLnxMsg").textContent="Downloading Linux "+id+": it shows in Saved versions when it's done and checked.";setTimeout(()=>{sysLoad(false);sysPoll()},400)})}
 function sysEnable(c){busy(c,async()=>{const j=await api("/api/sysbk/enable",{on:c.checked});toast(j.message);sysLoad(c.checked)})}
 function sysRender(j){$("sysDir").textContent="Folder: "+j.dir+" · "+j.versions.length+" version"+(j.versions.length===1?"":"s")+", "+fmtB(j.total||0);
  const st=j.state,run=st.running;
@@ -2553,7 +2565,7 @@ function sysRender(j){$("sysDir").textContent="Folder: "+j.dir+" · "+j.versions
   :'<tr><td colspan="7" class="muted">Nothing saved yet. Versions are saved the next time SS1 Tool connects.</td></tr>';
  $("sysSetCard").style.display=j.settings&&j.settings.length?"block":"none";
  if(j.settings)$("sysSets").innerHTML=j.settings.map(s=>`<div class="kv"><span>${esc(s.Name)}</span><span>${s.Status==="reset"?`<span class="pill warn">Reset by the Linux ${esc(s.Since)} update</span> <button class="b" style="padding:3px 10px" onclick="sysSetBack('${esc(s.Path)}',this)">Put mine back</button>`:s.Status==="unchanged"?'<span class="pill good">Unchanged</span>':s.Status==="changed"?'<span class="pill muted">Changed</span>':`<span class="pill muted">${esc(s.Status)}</span>`}</span></div>`).join("")}
-async function sysPoll(){if(sysPolling)return;sysPolling=true;try{for(;;){await new Promise(r=>setTimeout(r,900));const j=await api("/api/sysbk/status");SYS=j;sysRender(j);if(!j.state.running){sysLoad(true);break}}}catch(e){}sysPolling=false}
+async function sysPoll(){if(sysPolling)return;sysPolling=true;try{for(;;){await new Promise(r=>setTimeout(r,900));const j=await api("/api/sysbk/status");SYS=j;sysRender(j);sysLnxLoad();if(!j.state.running){sysLoad(true);break}}}catch(e){}sysPolling=false}
 function sysCheckNow(b){if(!connectedHost)return toast("Connect to the SuperStation first",true);busy(b,async()=>{await api("/api/sysbk/check",{});setTimeout(()=>{sysLoad(false);sysPoll()},400)})}
 function sysDelete(b){const items=[...document.querySelectorAll(".sysTick:checked")].map(c=>({Part:c.dataset.part,ID:c.dataset.id}));if(!items.length)return toast("Tick the versions to delete first",true);
  if(!confirm(`Delete ${items.length} saved version(s) from this PC? They can't be put back on the SuperStation after this.`))return;busy(b,async()=>{const j=await api("/api/sysbk/delete",{items});toast(j.message);$("sysAll").checked=false;sysLoad(false)})}
@@ -2924,7 +2936,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("## SS1 Tool for Android: app problem report","");
   add("Where",where);add("Problem",types.join(", ")||"not given");
   L.push("","### What happened","",maskText($("repText").value.trim(),privWords())||"(not described)","","### App");
-  add("SS1 Tool",(d.app_version||"1.32.14")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
+  add("SS1 Tool",(d.app_version||"1.32.15")+(d.abi?" ("+d.abi+")":""));add("WebView",d.webview);add("Connected to a SuperStation",connectedHost?"yes":"no");
   L.push("","### Device");
   add("Model",d.model);add("Android",d.android?`${d.android} (API ${d.sdk})`:"");add("Type",d.form&&`${d.form}, ${d.orientation}`);
   add("Screen",d.px&&`${d.px} px, ${d.dp} dp, ${d.dpi} dpi`);add("Page size",`${document.documentElement.clientWidth}x${innerHeight} CSS px at ${devicePixelRatio}x`);
@@ -2946,7 +2958,7 @@ async function repBuild(btn){const d=DEV||{};btn.disabled=true;const old=btn.tex
   L.push("","---","_No personal data: no IP or MAC addresses, network names, passwords, accounts, device IDs or location._");
   REPORT=L.join("\n");
   const bs=getComputedStyle(document.body);
-  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.32.14",store:d.store||"",made:new Date().toISOString(),where,types,
+  REPLAYOUT=JSON.stringify({format:1,app:d.app_version||"1.32.15",store:d.store||"",made:new Date().toISOString(),where,types,
    viewport:{w:document.documentElement.clientWidth,h:innerHeight,dpr:devicePixelRatio},font:{body:bs.fontSize,family:bs.fontFamily},
    device:{model:d.model,android:d.android,sdk:d.sdk,form:d.form,orientation:d.orientation,px:d.px,dp:d.dp,dpi:d.dpi,display_size:d.display_size,font_scale:d.font_scale,text_zoom:d.text_zoom,bold_text:d.bold_text,high_contrast_text:d.high_contrast_text,magnification:d.magnification,webview:d.webview,navigation:d.navigation,multi_window:d.multi_window},
    autoFixed:window.AFIXED||[],log:APPLOG,pages:REPSNAP?REPSNAP.pages:[]});
